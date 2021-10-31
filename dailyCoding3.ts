@@ -1,5 +1,7 @@
 // @ts-ignore
 const [{ log }, { abs, max, min, floor, random, round }] = [console, Math];
+const asc = (a: number, b: number): number => a - b;
+const sum = (acc: number, val: number): number => acc + val;
 
 //#region prime: gonna get himself some justice, even from primes
 
@@ -705,7 +707,35 @@ const swapByK = (arr: any[], k: number): any[] => {
   return arr;
 };
 
-log(swapByK([1, 2, 3, 4, 5, 6], 2));
+// log(swapByK([1, 2, 3, 4, 5, 6], 2));
+
+//#endregion
+
+//#region max profits!
+
+// Given an array of numbers representing the stock prices of a company in chronological order and an integer k, return the maximum profit you can make from k buys and sells. You must buy the stock before you can sell it, and you must sell the stock before you can buy it again.
+
+// For example, given k = 2 and the array [5, 2, 4, 0, 1], you should return 3.
+
+const maxProfits = (nums: number[], k: number): number => {
+  let buys: number[] = [];
+
+  for (let i = 0; i < nums.length - 1; ++i) {
+    const [cur, next]: number[] = [nums[i], nums[i + 1]];
+    if (next > cur) buys.push(next - cur);
+  }
+
+  buys.sort(asc);
+
+  const len: number = buys.length;
+  if (len > k) buys = buys.slice(len - k);
+
+  return buys.reduce(sum);
+};
+
+log(maxProfits([5, 2, 4, 0, 1, 7], 2));
+
+// I think this was written with more assumptions than explicit constraints. This should work for how it's written.
 
 //#endregion
 
