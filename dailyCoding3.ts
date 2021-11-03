@@ -1,5 +1,9 @@
 // @ts-ignore
-const [{ log }, { abs, max, min, floor, random, round }] = [console, Math];
+const [{ log }, { abs, max, min, floor, random, round }, { now }] = [
+  console,
+  Math,
+  Date,
+];
 const asc = (a: number, b: number): number => a - b;
 const sum = (acc: number, val: number): number => acc + val;
 
@@ -733,9 +737,66 @@ const maxProfits = (nums: number[], k: number): number => {
   return buys.reduce(sum);
 };
 
-log(maxProfits([5, 2, 4, 0, 1, 7], 2));
+// log(maxProfits([5, 2, 4, 0, 1, 7], 2));
 
 // I think this was written with more assumptions than explicit constraints. This should work for how it's written.
+
+//#endregion
+
+//#region HitCounter
+
+// Design and implement a HitCounter class that keeps track of requests (or hits). It should support the following operations:
+
+// record(timestamp): records a hit that happened at timestamp
+// total(): returns the total number of hits recorded
+// range(lower, upper): returns the number of hits that occurred between timestamps lower and upper (inclusive)
+// Follow-up: What if our system has limited memory?
+
+class HitCounter {
+  private data: Set<number> = new Set<number>();
+
+  get total(): number {
+    return this.data.size;
+  }
+
+  public record(timestamp: number): this {
+    this.data.add(timestamp);
+    return this;
+  }
+
+  public range(lower: number, upper: number): number {
+    return [...this.data].filter(
+      (num: number): boolean => num >= lower && num <= upper
+    ).length;
+  }
+}
+
+const hitCounter: HitCounter = new HitCounter();
+
+const startTime = now();
+hitCounter.record(startTime);
+
+const targetEnd: number = 6;
+let middleTime: number,
+  counter: number = 1;
+
+const addARecord = (): void => {
+  const rightNow = now();
+  hitCounter.record(rightNow);
+
+  if (counter === floor(targetEnd / 2)) middleTime = rightNow;
+
+  if (counter === targetEnd) {
+    log(hitCounter);
+    log(hitCounter.total);
+    log(hitCounter.range(startTime, middleTime));
+    clearInterval(intervalId);
+  }
+
+  ++counter;
+};
+
+const intervalId: NodeJS.Timeout = setInterval(addARecord, 500);
 
 //#endregion
 
