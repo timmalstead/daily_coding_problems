@@ -869,9 +869,84 @@ for (let i = 1; i <= 500; ++i) {
 
 sArray.init(testArr, 600);
 
-log(sArray);
-sArray.set(50, "yes");
-log(sArray.get(50));
+// log(sArray.set(50, "yes").get(50));
+// log(sArray);
+
+//#endregion
+
+//#region largest area
+
+// This question was asked by Google.
+
+// Given an N by M matrix consisting only of 1's and 0's, find the largest rectangle containing only 1's and return its area.
+
+// For example, given the following matrix:
+
+// [[1, 0, 0, 0],
+//  [1, 0, 1, 1],
+//  [1, 0, 1, 1],
+//  [0, 1, 0, 0]]
+// Return 4.
+
+const recDirs: Dir[] = [
+  { name: "up", rowDir: -1, colDir: 0 },
+  { name: "right", rowDir: 0, colDir: 1 },
+  { name: "down", rowDir: 1, colDir: 0 },
+  { name: "left", rowDir: 0, colDir: -1 },
+];
+
+const mapRec = (
+  row: number,
+  col: number,
+  mat: Matrix,
+  area: number = 1
+): number => {
+  if (mat[row][col]) {
+    mat[row][col] = 0;
+
+    recDirs.forEach((dir: Dir): void => {
+      const { rowDir, colDir } = dir;
+
+      const [newRowDir, newColDir]: number[] = [row + rowDir, col + colDir];
+
+      if (mat[newRowDir]?.[newColDir])
+        area = mapRec(newRowDir, newColDir, mat, ++area);
+    });
+  }
+  return area;
+};
+
+const largestRec = (mat: Matrix): number => {
+  let [largestArea, row, col]: number[] = [0, 0, 0];
+
+  for (let i = 0; i < mat.flat().length; ++i) {
+    if (mat[row][col]) largestArea = max(largestArea, mapRec(row, col, mat));
+
+    ++col;
+    if (mat[row][col] === undefined) {
+      col = 0;
+      ++row;
+    }
+  }
+
+  return largestArea;
+};
+
+const recMat: Matrix = [
+  [1, 0, 0, 0],
+  [1, 0, 1, 1],
+  [1, 0, 1, 1],
+  [0, 1, 0, 1],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
+  [0, 1, 0, 0],
+];
+
+log(largestRec(recMat));
 
 //#endregion
 
