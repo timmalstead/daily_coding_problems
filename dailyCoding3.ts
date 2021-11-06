@@ -771,32 +771,107 @@ class HitCounter {
   }
 }
 
-const hitCounter: HitCounter = new HitCounter();
+const testCounter = (targetEnd: number): void => {
+  const targetMinusOne: number = targetEnd - 1;
+  const hitCounter: HitCounter = new HitCounter();
 
-const startTime = now();
-hitCounter.record(startTime);
+  const startTime = now();
+  hitCounter.record(startTime);
+  log(startTime);
 
-const targetEnd: number = 6;
-let middleTime: number,
-  counter: number = 1;
+  let middleTime: number,
+    counter: number = 1;
 
-const addARecord = (): void => {
-  const rightNow = now();
-  hitCounter.record(rightNow);
+  const addARecord = (): void => {
+    const rightNow = now();
+    hitCounter.record(rightNow);
 
-  if (counter === floor(targetEnd / 2)) middleTime = rightNow;
+    if (counter === floor(targetMinusOne / 2)) middleTime = rightNow;
 
-  if (counter === targetEnd) {
-    log(hitCounter);
-    log(hitCounter.total);
-    log(hitCounter.range(startTime, middleTime));
-    clearInterval(intervalId);
-  }
+    log(rightNow);
+    if (counter === targetMinusOne) {
+      log(hitCounter);
+      log(hitCounter.total);
+      log(hitCounter.range(startTime, middleTime));
+      clearInterval(intervalId);
+    }
+    ++counter;
+  };
 
-  ++counter;
+  const intervalId: NodeJS.Timeout = setInterval(addARecord, 500);
 };
 
-const intervalId: NodeJS.Timeout = setInterval(addARecord, 500);
+// testCounter(10);
+
+//#endregion
+
+//#region
+// You have a large array with most of the elements as zero.
+
+// Use a more space-efficient data structure, SparseArray, that implements the same interface:
+
+// init(arr, size): initialize with the original large array and size.
+// set(i, val): updates index at i with val.
+// get(i): gets the value at index i.
+
+class SparseArray {
+  private data: { [index: number]: any } = {};
+  private limit: number;
+
+  private reject(msg: "method" | "index"): null {
+    log(
+      msg === "method"
+        ? "You must call init before accessing this method"
+        : "You cannot access an index higher than the limit set in the init method"
+    );
+    return null;
+  }
+
+  public init(arr: any[], size: number): this | null {
+    if (this.limit === undefined) {
+      this.limit = size - 1;
+
+      arr.forEach((ele: any, i: number): void => {
+        if (ele !== 0 && i <= this.limit) this.data[i] = ele;
+      });
+
+      return this;
+    } else return null;
+  }
+
+  public get(i: number): any {
+    if (this.limit !== undefined) {
+      if (i <= this.limit) {
+        if (this.data[i] === undefined) return 0;
+        else return this.data[i];
+      } else return this.reject("index");
+    } else return this.reject("method");
+  }
+
+  public set(i: number, val: any): this | null {
+    if (this.limit !== undefined) {
+      if (i <= this.limit) {
+        this.data[i] = val;
+        return this;
+      } else return this.reject("index");
+    } else return this.reject("method");
+  }
+}
+
+const sArray = new SparseArray();
+
+const testArr: number[] = [];
+
+for (let i = 1; i <= 500; ++i) {
+  if (i % 100 === 0) testArr.push(i);
+  else testArr.push(0);
+}
+
+sArray.init(testArr, 600);
+
+log(sArray);
+sArray.set(50, "yes");
+log(sArray.get(50));
 
 //#endregion
 
