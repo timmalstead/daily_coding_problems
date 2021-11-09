@@ -805,7 +805,7 @@ const testCounter = (targetEnd: number): void => {
 
 //#endregion
 
-//#region
+//#region SparseArr
 // You have a large array with most of the elements as zero.
 
 // Use a more space-efficient data structure, SparseArray, that implements the same interface:
@@ -946,7 +946,68 @@ const recMat: Matrix = [
   [0, 1, 0, 0],
 ];
 
-log(largestRec(recMat));
+// log(largestRec(recMat));
+
+//#endregion
+
+//#region minimum number of coins
+
+// This problem was asked by Google.
+
+// Find the minimum number of coins required to make n cents.
+
+// You can use standard American denominations, that is, 1¢, 5¢, 10¢, and 25¢.
+
+// For example, given n = 16, return 3 since we can make it with a 10¢, a 5¢, and a 1¢.
+
+const minNumOfCoins = (n: number, coins: number[]): number => {
+  if (n > coins.reduce(sum)) return 0;
+  else {
+    let shortestLength: number;
+
+    const len: number = coins.length;
+    const permuations: number = len ** 2;
+
+    for (let i = 1; i < permuations; ++i) {
+      const sumArr: number[] = [];
+
+      const bin: string = i.toString(2).padStart(len, "0");
+
+      for (let j = 0; j < len; ++j) if (bin[j] === "1") sumArr.push(coins[j]);
+
+      const summed: number = sumArr.reduce(sum);
+
+      if (summed === n && (!shortestLength || sumArr.length < shortestLength))
+        shortestLength = sumArr.length;
+    }
+
+    return shortestLength;
+  }
+};
+
+//above works if each coin is used once at most
+
+// const minNumOfCoins = (n: number, coins: number[]): number => {
+//   let shortestLength: number;
+
+//   const len: number = coins.length;
+//   const permuations: number = n ** len;
+//   for (let i = 1; i < permuations; ++i) {
+//     const sumArr: number[] = [];
+
+//     const bin: string = i.toString(2).padStart(len, "0");
+
+//     for (let j = 0; j < len; ++j) if (bin[j] === "1") sumArr.push(coins[j]);
+
+//     const summed: number = sumArr.reduce(sum);
+
+//     if (summed === n && (!shortestLength || sumArr.length < shortestLength))
+//       shortestLength = sumArr.length;
+//   }
+//   return shortestLength;
+// };
+
+log(minNumOfCoins(50, [1, 5, 10, 25]));
 
 //#endregion
 
