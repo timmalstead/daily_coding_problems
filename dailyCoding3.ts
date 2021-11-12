@@ -1011,7 +1011,7 @@ const minNumOfCoins = (n: number, coins: number[]): number => {
 
 //#endregion
 
-//#region
+//#region two ints appear once
 
 // Given an array of integers in which two elements appear exactly once and all other elements appear exactly twice, find the two elements that appear only once.
 
@@ -1019,13 +1019,42 @@ const minNumOfCoins = (n: number, coins: number[]): number => {
 
 // Follow-up: Can you do this in linear time and constant space?
 
-const twoAppearOnce = (numArr: number[]): [number, number] | any =>
+const twoAppearOnce = (numArr: number[]): number[] =>
   numArr.filter(
     (num, _, arr): boolean => arr.indexOf(num) === arr.lastIndexOf(num)
   );
 
-log(twoAppearOnce([2, 4, 6, 8, 10, 2, 6, 10]));
+// log(twoAppearOnce([2, 4, 6, 8, 10, 2, 6, 10]));
 
+//#endregion
+
+//#region modified balanced brackets problem
+
+// You're given a string consisting solely of (, ), and *. * can represent either a (, ), or an empty string. Determine whether the parentheses are balanced.
+
+// For example, (()* and (*) are balanced. )*( is not balanced.
+
+const wildcardBracketsBalanced = (paran: string): boolean => {
+  const permutations: string[] = ["(", ")", ""].map((s) =>
+    paran.replace(/\*/g, s)
+  );
+
+  //@ts-ignore
+  const balanced: boolean[] = permutations.filter((str: string): boolean => {
+    const stack: string[] = [];
+
+    for (const s of str) {
+      if (s === "(") stack.push(s);
+      else if (!stack.length || stack.pop() !== "(") return false;
+    }
+
+    return stack.length === 0;
+  });
+
+  return !!balanced.length;
+};
+
+log(wildcardBracketsBalanced("(*)"));
 //#endregion
 
 //#region
