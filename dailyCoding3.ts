@@ -1054,7 +1054,40 @@ const wildcardBracketsBalanced = (paran: string): boolean => {
   return !!balanced.length;
 };
 
-log(wildcardBracketsBalanced("(*)"));
+// log(wildcardBracketsBalanced("(*)") === true);
+// log(wildcardBracketsBalanced(")*(") === false);
+// log(wildcardBracketsBalanced("(()*") === true);
+//#endregion
+
+//#region partition list
+
+// Given a pivot x, and a list lst, partition the list into three parts.
+
+// The first part contains all elements in lst that are less than x
+// The second part contains all elements in lst that are equal to x
+// The third part contains all elements in lst that are larger than x
+// Ordering within a part can be arbitrary.
+
+// For example, given x = 10 and lst = [9, 12, 3, 5, 14, 10, 10], one partition may be [9, 3, 5, 10, 10, 12, 14].
+
+//feel like there may be something missing from the way this is written...
+
+const partition = (x: number, lst: number[]): number[] => {
+  const part: Matrix = [[], [], []];
+
+  for (const num of lst) {
+    if (num < x) part[0].push(num);
+    else if (num === x) part[1].push(num);
+    else part[2].push(num);
+  }
+
+  return part.flat();
+};
+
+log(partition(10, [9, 12, 3, 5, 14, 10, 10]));
+
+// feels like it shouldn't be this easy
+
 //#endregion
 
 //#region
