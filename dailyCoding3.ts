@@ -1084,9 +1084,41 @@ const partition = (x: number, lst: number[]): number[] => {
   return part.flat();
 };
 
-log(partition(10, [9, 12, 3, 5, 14, 10, 10]));
+// log(partition(10, [9, 12, 3, 5, 14, 10, 10]));
 
-// feels like it shouldn't be this easy
+// feels like it shouldn't be this easy11
+
+//#endregion
+
+//#region next biggest number
+
+// Given an array of numbers and an index i, return the index of the nearest larger number of the number at index i, where distance is measured in array indices.
+
+// For example, given [4, 1, 3, 5, 6] and index 0, you should return 3.
+
+// If two distances to larger numbers are the equal, then return any one of them. If the array at i doesn't have a nearest larger integer, then return null.
+
+// Follow-up: If you can preprocess the array, can you do this in constant time?
+
+const findNextNum = (arr: number[], index: number): number | null => {
+  let nextLargestNumIndice: number | null = null;
+
+  const target: number = arr[index];
+  for (let i = 0; i < arr.length; ++i)
+    if (i > index) {
+      const cur: number = arr[i];
+
+      if (
+        cur > target &&
+        (nextLargestNumIndice === null || cur < nextLargestNumIndice)
+      )
+        nextLargestNumIndice = i;
+    }
+
+  return nextLargestNumIndice;
+};
+
+log(findNextNum([4, 1, 3, 5, 6], 1));
 
 //#endregion
 
