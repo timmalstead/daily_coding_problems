@@ -1128,19 +1128,30 @@ const findNextNum = (arr: number[], index: number): number | null => {
 
 // Given a list, sort it using this method: reverse(lst, i, j), which reverses lst from i to j.
 
+// const reverseListSegment = (lst: any[], i: number, j: number): any[] => {
+//   const sliceEnd: number = j + 1;
+
+//   const first: any[] = lst.slice(0, i);
+//   const middle: any[] = lst.slice(i, sliceEnd);
+//   const last: any[] = lst.slice(sliceEnd);
+
+//   middle.reverse();
+
+//   return [...first, ...middle, ...last];
+// };
+
 const reverseListSegment = (lst: any[], i: number, j: number): any[] => {
-  const sliceEnd: number = j + 1;
+  for (; i <= j; ++i, --j)
+    if (lst[i] && lst[j]) {
+      const tmp = lst[i];
 
-  const first: any[] = lst.slice(0, i);
-  const middle: any[] = lst.slice(i, sliceEnd);
-  const last: any[] = lst.slice(sliceEnd);
-
-  middle.reverse();
-
-  return [...first, ...middle, ...last];
+      lst[i] = lst[j];
+      lst[j] = tmp;
+    }
+  return lst;
 };
 
-log(reverseListSegment([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 2, 5));
+log(reverseListSegment([1, 2], 0, 2));
 
 //#endregion
 
