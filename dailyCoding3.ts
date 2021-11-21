@@ -1142,16 +1142,83 @@ const findNextNum = (arr: number[], index: number): number | null => {
 
 const reverseListSegment = (lst: any[], i: number, j: number): any[] => {
   for (; i <= j; ++i, --j)
-    if (lst[i] && lst[j]) {
+    if (lst[i] !== undefined && lst[j] !== undefined) {
       const tmp = lst[i];
 
       lst[i] = lst[j];
       lst[j] = tmp;
-    }
+    } else break;
   return lst;
 };
 
-log(reverseListSegment([1, 2], 0, 2));
+// log(reverseListSegment([1, 2, 3], 1, 2));
+
+//#endregion
+
+//#region sum
+
+// Given a list of numbers L, implement a method sum(i, j) which returns the sum from the sublist L[i:j] (including i, excluding j).
+
+// For example, given L = [1, 2, 3, 4, 5], sum(1, 3) should return sum([2, 3]), which is 5.
+
+// You can assume that you can do some pre-processing. sum() should be optimized over the pre-processing step.
+
+const sumUp = (l: number[], i: number, j: number): number => {
+  let finalSum: number = 0;
+
+  for (; i < j; ++i) finalSum += l[i];
+
+  return finalSum;
+};
+
+// log(sumUp([1, 2, 3, 4, 5], 1, 3));
+
+//#endregion
+
+//#region central points
+
+// Given a list of points, a central point, and an integer k, find the nearest k points from the central point.
+
+// For example, given the list of points [[0, 0], [5, 4], [3, 1]], the central point [1, 2], and k = 2, return [[0, 0], [3, 1]]
+
+const findCentralPoints = (
+  lst: number[][],
+  p: number[],
+  targNum: number
+): number[][] => {
+  const finalArr: number[][] = [];
+
+  lst.push(p);
+  lst.sort((a, b) => a[0] + a[1] - (b[0] + b[1]));
+
+  const [index, half]: number[] = [lst.indexOf(p), floor(targNum / 2)];
+
+  for (let i = index - half; i < index - 1; ++i)
+    if (lst[i] !== undefined) finalArr.push(lst[i]);
+
+  const otherHalf: number = targNum - finalArr.length;
+
+  for (let j = index + 1; j <= index + otherHalf; ++j)
+    if (lst[j] !== undefined) finalArr.push(lst[j]);
+
+  return finalArr;
+};
+
+log(
+  findCentralPoints(
+    [
+      [13, 2],
+      [-1, -1],
+      [0, 0],
+      [5, 4],
+      [3, 1],
+      [6, 7],
+      [1, 2],
+    ],
+    [1, 2],
+    6
+  )
+);
 
 //#endregion
 
