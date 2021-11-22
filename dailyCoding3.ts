@@ -1204,21 +1204,99 @@ const findCentralPoints = (
   return finalArr;
 };
 
-log(
-  findCentralPoints(
-    [
-      [13, 2],
-      [-1, -1],
-      [0, 0],
-      [5, 4],
-      [3, 1],
-      [6, 7],
-      [1, 2],
-    ],
-    [1, 2],
-    6
-  )
-);
+// log(
+//   findCentralPoints(
+//     [
+//       [13, 2],
+//       [-1, -1],
+//       [0, 0],
+//       [5, 4],
+//       [3, 1],
+//       [6, 7],
+//       [1, 2],
+//     ],
+//     [1, 2],
+//     6
+//   )
+// );
+
+//#endregion
+
+//#region
+
+// Given a 2-D matrix representing an image, a location of a pixel in the screen and a color C, replace the color of the given pixel and all contiguous same colored pixels with C.
+
+// For example, given the following matrix, and location pixel of (2, 2), and 'G' for green:
+
+// B B W
+// W W W
+// W W W
+// B B B
+// Becomes
+
+// B B G
+// G G G
+// G G G
+// B B B
+
+type StrMat = string[][];
+
+const allDirs: Dir[] = [
+  { name: "up", rowDir: -1, colDir: 0 },
+  { name: "up-right", rowDir: -1, colDir: 1 },
+  { name: "right", rowDir: 0, colDir: 1 },
+  { name: "right-down", rowDir: 1, colDir: 1 },
+  { name: "down", rowDir: 1, colDir: 0 },
+  { name: "down-left", rowDir: 1, colDir: -1 },
+  { name: "left", rowDir: 0, colDir: -1 },
+  { name: "up-left", rowDir: -1, colDir: -1 },
+];
+
+const replacePixels = (
+  img: StrMat,
+  row: number,
+  col: number,
+  targetColor: string,
+  finalColor: string
+): StrMat => {
+  if (img[row][col]) {
+    img[row][col] = finalColor;
+
+    allDirs.forEach(({ rowDir, colDir }) => {
+      const [newRowDir, newColDir]: number[] = [row + rowDir, col + colDir];
+
+      if (img[newRowDir]?.[newColDir] === targetColor)
+        img = replacePixels(img, newRowDir, newColDir, targetColor, finalColor);
+    });
+  }
+  return img;
+};
+
+const replaceContiguousColor = (
+  img: StrMat,
+  pix: [number, number],
+  color: string
+): StrMat => {
+  const [row, col]: number[] = pix;
+  const targetColor: string = img[row][col];
+
+  img = replacePixels(img, row, col, targetColor, color);
+
+  return img;
+};
+
+const [B, W, G]: string[] = ["Black", "White", "Green"];
+
+const image: StrMat = [
+  [B, B, W],
+  [W, W, W],
+  [W, W, W],
+  [B, B, B],
+];
+
+const pixel: [number, number] = [3, 2];
+
+log(replaceContiguousColor(image, pixel, G));
 
 //#endregion
 
