@@ -1296,7 +1296,82 @@ const image: StrMat = [
 
 const pixel: [number, number] = [3, 2];
 
-log(replaceContiguousColor(image, pixel, G));
+// log(replaceContiguousColor(image, pixel, G));
+
+//#endregion
+
+//#region
+
+// You are given n numbers as well as n probabilities that sum up to 1. Write a function to generate one of the numbers with its corresponding probability.
+
+// For example, given the numbers [1, 2, 3, 4] and probabilities [0.1, 0.5, 0.2, 0.2], your function should return 1 10% of the time, 2 50% of the time, and 3 and 4 20% of the time.
+
+// You can generate random numbers between 0 and 1 uniformly.
+
+// I am going to do this problem with the assumption that we only have probabilities to one decimal place
+
+const returnProb = (n: number[], prob: number[]): number => {
+  const probHash: { [prob: number]: number } = {};
+  let [probSum, probIndex]: number[] = [0.1, 0];
+
+  for (let i = 0; i < 10; ++i) {
+    probHash[probSum.toFixed(1)] = n[probIndex];
+    probSum += 0.1;
+
+    if (probSum > prob.slice(0, probIndex + 1).reduce(sum)) ++probIndex;
+  }
+
+  let rand: number = +random().toFixed(1);
+
+  while (!rand) rand = +random().toFixed(1);
+  if (rand === 1) rand = 1.0;
+
+  return probHash[rand];
+};
+
+// log(returnProb([1, 2, 3, 4], [0.1, 0.5, 0.2, 0.2]));
+
+//#endregion
+
+//#region distance between words
+
+//Find an efficient algorithm to find the smallest distance (measured in number of words) between any two given words in a string.
+
+//For example, given words "hello", and "world" and a text content of "dog cat hello cat dog dog hello cat world", return 1 because there's only one word "cat" in between the two words.
+
+// so, the shortest distance and there may be multiple instances of the word
+
+const smallestDistanceInWords = (
+  wrd1: string,
+  wrd2: string,
+  text: string
+): number | null => {
+  let shortestDistance: number, curDistance: number, firstWordFound: string;
+
+  for (const word of text.trim().split(" ")) {
+    if (word === wrd1 || word === wrd2) {
+      if (
+        firstWordFound &&
+        word !== firstWordFound &&
+        (!shortestDistance || curDistance < shortestDistance)
+      )
+        shortestDistance = curDistance;
+      else if (!firstWordFound) firstWordFound = word;
+
+      curDistance = 0;
+    } else if (firstWordFound) ++curDistance;
+  }
+
+  return shortestDistance || null;
+};
+
+log(
+  smallestDistanceInWords(
+    "hello",
+    "world",
+    "dog cat hello cat dog dog world hello cat world"
+  )
+);
 
 //#endregion
 
