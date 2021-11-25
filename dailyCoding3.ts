@@ -1365,13 +1365,39 @@ const smallestDistanceInWords = (
   return shortestDistance || null;
 };
 
-log(
-  smallestDistanceInWords(
-    "hello",
-    "world",
-    "dog cat hello cat dog dog world hello cat world"
-  )
-);
+// log(
+//   smallestDistanceInWords(
+//     "hello",
+//     "world",
+//     "dog cat hello cat dog dog world hello cat world"
+//   )
+// );
+
+//#endregion
+
+//#region element appears more than half
+
+// Given a list of elements, find the majority element, which appears more than half the time (> floor(len(lst) / 2.0)).
+
+// You can assume that such element exists.
+
+// For example, given [1, 2, 1, 1, 3, 4, 0], return 1.
+
+const moreThanHalf = (nums: number[]): number | null => {
+  const half: number = floor(nums.length / 2);
+  const counter: [string, number][] = Object.entries(
+    nums.reduce((obj, num) => {
+      obj[num] = ++obj[num] || 1;
+      return obj;
+    }, {})
+  );
+
+  for (const [key, val] of counter) if (val >= half) return +key;
+
+  return null;
+};
+
+log(moreThanHalf([1, 2, 1, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0]));
 
 //#endregion
 
