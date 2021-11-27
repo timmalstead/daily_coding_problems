@@ -1,5 +1,5 @@
 // @ts-ignore
-const [{ log }, { abs, max, min, floor, random, round }, { now }] = [
+const [{ log }, { abs, max, min, floor, random, round, sqrt }, { now }] = [
   console,
   Math,
   Date,
@@ -1397,7 +1397,56 @@ const moreThanHalf = (nums: number[]): number | null => {
   return null;
 };
 
-log(moreThanHalf([1, 2, 1, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0]));
+// log(moreThanHalf([1, 2, 1, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0]));
+
+//#endregion
+
+//#region squared numbers to n
+
+// Given a positive integer n, find the smallest number of squared integers which sum to n.
+
+// For example, given n = 13, return 2 since 13 = 3-2 + 2-2 = 9 + 4.
+
+// Given n = 27, return 3 since 27 = 3-2 + 3-2 + 3-2 = 9 + 9 + 9.
+
+// combinations === order does Not matter -> n ** 3
+// permutations === order does matter, figure out max combos using factorial
+
+const isInt = (num: number): boolean => num % 1 === 0;
+
+const squaresToN = (n: number): number => {
+  let smallest: number;
+  const squares: number[] = [];
+
+  for (let i = 0; i <= n; ++i) if (isInt(sqrt(i))) squares.push(i);
+
+  const len = squares.length;
+  const combos = len ** 2;
+
+  for (let i = 0; i < combos; ++i) {
+    const tmp: number[] = [];
+    const bin: string = i.toString(2).padStart(len, "0");
+    log(bin);
+
+    for (let j = 0; j < len; ++j) if (bin[j] === "1") tmp.push(squares[j]);
+
+    const addUp: number = tmp.reduce(sum, 0);
+
+    if (addUp === n && (!smallest || tmp.length < smallest))
+      smallest = tmp.length;
+  }
+
+  squares.forEach((num: number): void => {
+    const divide: number = n / num;
+    if (n > 1 && isInt(divide) && (!smallest || divide < smallest))
+      smallest = divide;
+  });
+
+  return smallest;
+};
+
+log(squaresToN(13) === 2);
+log(squaresToN(27) === 3);
 
 //#endregion
 
