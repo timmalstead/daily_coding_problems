@@ -1426,7 +1426,6 @@ const squaresToN = (n: number): number => {
   for (let i = 0; i < combos; ++i) {
     const tmp: number[] = [];
     const bin: string = i.toString(2).padStart(len, "0");
-    log(bin);
 
     for (let j = 0; j < len; ++j) if (bin[j] === "1") tmp.push(squares[j]);
 
@@ -1445,8 +1444,78 @@ const squaresToN = (n: number): number => {
   return smallest;
 };
 
-log(squaresToN(13) === 2);
-log(squaresToN(27) === 3);
+// log(squaresToN(13) === 2);
+// log(squaresToN(27) === 3);
+
+//#endregion
+
+//#region permutation is palindrome
+
+// Given a string, determine whether any permutation of it is a palindrome.
+// For example, carrace should return true, since it can be rearranged to form racecar, which is a palindrome. daily should return false, since there's no rearrangement that can form a palindrome.
+
+// const factor = (n: number): number => {
+//   let prod: number = 1;
+
+//   for (let i = n; i > 0; --i) prod *= i;
+
+//   return prod;
+// };
+
+//so below approach works if order doesn't matter. but it does!
+// const wordMakesPalindrome = (s: string): boolean => {
+//   const len: number = s.length;
+//   const permutations: number = factor(len);
+
+//   for (let i = 0; i < permutations; ++i) {
+//     let tmpS: string = "";
+
+//     const bin: string = i.toString(2).padStart(len, "0");
+
+//     for (let j = 0; j < len; ++j) if (bin[j] === "1") tmpS += s[j];
+//   }
+
+//   return false;
+// };
+
+const findPerms = (s: string): string | string[] => {
+  const len: number = s.length;
+
+  if (len <= 1) return s;
+  else {
+    const perms: string[] = [];
+
+    for (let i = 0; i < len; ++i) {
+      const cur: string = s[i];
+      const rem: string = `${s.slice(0, i)}${s.slice(i + 1)}`;
+
+      for (let j = 0; j < rem.length; ++j)
+        perms.push(`${cur}${findPerms(rem)[j]}`);
+    }
+
+    return perms;
+  }
+};
+
+const wordMakesPalindrome = (s: string): boolean => {
+  const perms: string[] = findPerms(s) as string[];
+
+  const [half, end]: number[] = [floor(s.length / 2), s.length - 1];
+
+  for (const perm of perms)
+    for (let i = 0, j = end; i <= half; ++i, --j) {
+      if (perm[i] !== perm[j]) break;
+
+      return true;
+    }
+
+  return false;
+};
+
+log(wordMakesPalindrome("carrace") === true);
+log(wordMakesPalindrome("derg") === false);
+
+// this is kind of interesting though. i could use this in combination with the binary string method to determine all permutations of all combinations of a string. i think the issue was i was trying to be do combos and order at the same time
 
 //#endregion
 
