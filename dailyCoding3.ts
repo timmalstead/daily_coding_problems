@@ -1478,23 +1478,23 @@ const squaresToN = (n: number): number => {
 //   return false;
 // };
 
-const findPerms = (s: string): string | string[] => {
-  const len: number = s.length;
+// const findPerms = (s: string): string | string[] => {
+//   const len: number = s.length;
 
-  if (len <= 1) return s;
-  else {
-    const perms: string[] = [];
+//   if (len <= 1) return s;
+//   else {
+//     const perms: string[] = [];
 
-    for (let i = 0; i < len; ++i) {
-      const cur: string = s[i];
-      const rem: string = `${s.slice(0, i)}${s.slice(i + 1)}`;
+//     for (let i = 0; i < len; ++i) {
+//       const cur: string = s[i];
+//       const rem: string = `${s.slice(0, i)}${s.slice(i + 1)}`;
 
-      for (const subPerm of findPerms(rem)) perms.push(`${cur}${subPerm}`);
-    }
+//       for (const subPerm of findPerms(rem)) perms.push(`${cur}${subPerm}`);
+//     }
 
-    return perms;
-  }
-};
+//     return perms;
+//   }
+// };
 
 const wordMakesPalindrome = (s: string): boolean => {
   const perms: string[] = findPerms(s) as string[];
