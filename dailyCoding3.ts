@@ -1489,8 +1489,7 @@ const findPerms = (s: string): string | string[] => {
       const cur: string = s[i];
       const rem: string = `${s.slice(0, i)}${s.slice(i + 1)}`;
 
-      for (let j = 0; j < rem.length; ++j)
-        perms.push(`${cur}${findPerms(rem)[j]}`);
+      for (const subPerm of findPerms(rem)) perms.push(`${cur}${subPerm}`);
     }
 
     return perms;
@@ -1502,18 +1501,23 @@ const wordMakesPalindrome = (s: string): boolean => {
 
   const [half, end]: number[] = [floor(s.length / 2), s.length - 1];
 
-  for (const perm of perms)
-    for (let i = 0, j = end; i <= half; ++i, --j) {
-      if (perm[i] !== perm[j]) break;
+  for (const perm of perms) {
+    let isPal: boolean = true;
+    for (let i = 0, j = end; i <= half; ++i, --j)
+      if (perm[i] !== perm[j]) {
+        isPal = false;
+        break;
+      }
+    if (isPal) return true;
+  }
 
-      return true;
-    }
-
+  log(perms);
   return false;
 };
 
-log(wordMakesPalindrome("carrace") === true);
-log(wordMakesPalindrome("derg") === false);
+log(wordMakesPalindrome("carrace"));
+log(wordMakesPalindrome("dergdre"));
+log(wordMakesPalindrome("otta"));
 
 // this is kind of interesting though. i could use this in combination with the binary string method to determine all permutations of all combinations of a string. i think the issue was i was trying to be do combos and order at the same time
 
