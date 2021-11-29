@@ -1,9 +1,15 @@
+//#region helpers
+
+import { count } from "console";
+
 // @ts-ignore
 const [{ log }, { abs, max, min, floor, random, round, sqrt }, { now }] = [
   console,
   Math,
   Date,
 ];
+
+//#endregion
 
 //#region all palindromes
 
@@ -118,13 +124,34 @@ const travMaze = (
   return ways;
 };
 
-log(
-  travMaze([
-    [0, 0, 1],
-    [0, 0, 1],
-    [1, 0, 0],
-  ])
-);
+// log(
+//   travMaze([
+//     [0, 0, 1],
+//     [0, 0, 1],
+//     [1, 0, 0],
+//   ])
+// );
+//#endregion
+
+//#region simple string occurance problem
+
+// Given a string, return the first recurring character in it, or null if there is no recurring character.
+// For example, given the string "acbbac", return "b". Given the string "abcdef", return null.
+
+const firstRecurringChar = (str: string): string | null => {
+  const counter: { [char: string]: number } = {};
+
+  for (const char of str) {
+    counter[char] = ++counter[char] || 1;
+    if (counter[char] > 1) return char;
+  }
+
+  return null;
+};
+
+log(firstRecurringChar("acbbac") === "b");
+log(firstRecurringChar("abcdef") === null);
+
 //#endregion
 
 //#region
