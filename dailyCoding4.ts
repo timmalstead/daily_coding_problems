@@ -138,13 +138,23 @@ const travMaze = (
 // Given a string, return the first recurring character in it, or null if there is no recurring character.
 // For example, given the string "acbbac", return "b". Given the string "abcdef", return null.
 
-const firstRecurringChar = (str: string): string | null => {
-  const counter: { [char: string]: number } = {};
+// const firstRecurringChar = (str: string): string | null => {
+//   const counter: { [char: string]: number } = {};
 
-  for (const char of str) {
-    counter[char] = ++counter[char] || 1;
-    if (counter[char] > 1) return char;
-  }
+//   for (const char of str) {
+//     counter[char] = ++counter[char] || 1;
+//     if (counter[char] > 1) return char;
+//   }
+
+//   return null;
+// };
+
+const firstRecurringChar = (str: string): string | null => {
+  const holder = new Set<string>();
+
+  for (const char of str)
+    if (holder.has(char)) return char;
+    else holder.add(char);
 
   return null;
 };
