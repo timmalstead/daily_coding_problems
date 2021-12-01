@@ -150,17 +150,43 @@ const travMaze = (
 // };
 
 const firstRecurringChar = (str: string): string | null => {
-  const holder = new Set<string>();
+  const set = new Set<string>();
 
-  for (const char of str)
-    if (holder.has(char)) return char;
-    else holder.add(char);
+  for (const char of str) {
+    if (set.has(char)) return char;
+    else set.add(char);
+  }
 
   return null;
 };
 
-log(firstRecurringChar("acbbac") === "b");
-log(firstRecurringChar("abcdef") === null);
+// log(firstRecurringChar("acbbac") === "b");
+// log(firstRecurringChar("abcdef") === null);
+
+//#endregion
+
+//#region reverse bits
+
+// Given a 32-bit integer, return the number with its bits reversed.
+
+// For example, given the binary number 1111 0000 1111 0000 1111 0000 1111 0000, return 0000 1111 0000 1111 0000 1111 0000 1111.
+
+const reverseBits = (bin: string): string => {
+  let rev: string = "";
+
+  for (const char of bin) {
+    if (char === "0") rev += "1";
+    else if (char === "1") rev += "0";
+    else rev += char;
+  }
+
+  return rev;
+};
+
+log(
+  reverseBits("1111 0000 1111 0000 1111 0000 1111 0000") ===
+    "0000 1111 0000 1111 0000 1111 0000 1111"
+);
 
 //#endregion
 
