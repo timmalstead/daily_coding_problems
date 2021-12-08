@@ -183,9 +183,54 @@ const reverseBits = (bin: string): string => {
   return rev;
 };
 
+// log(
+//   reverseBits("1111 0000 1111 0000 1111 0000 1111 0000") ===
+//     "0000 1111 0000 1111 0000 1111 0000 1111"
+// );
+
+//#endregion
+
+//#region
+// Given an N by N matrix, rotate it by 90 degrees clockwise.
+
+// For example, given the following matrix:
+
+// [[1, 2, 3],
+//  [4, 5, 6],
+//  [7, 8, 9]]
+// you should return:
+
+// [[7, 4, 1],
+//  [8, 5, 2],
+//  [9, 6, 3]]
+// Follow-up: What if you couldn't use any extra space?
+
+const rotate90 = (mat: NumMat): NumMat => {
+  const finalMat: NumMat = [];
+
+  const flatArr: number[] = mat.flat();
+  let [startIndex, decrementBy]: number[] = [flatArr.length - 1, mat[0].length];
+  let subArr: number[] = [];
+
+  for (let i = 0, j = startIndex; i <= flatArr.length; ++i, j -= decrementBy) {
+    if (subArr.length === decrementBy) {
+      finalMat.unshift(subArr);
+
+      subArr = [];
+      j = --startIndex;
+    }
+    subArr.push(flatArr[j]);
+  }
+
+  return finalMat;
+};
+
 log(
-  reverseBits("1111 0000 1111 0000 1111 0000 1111 0000") ===
-    "0000 1111 0000 1111 0000 1111 0000 1111"
+  rotate90([
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+  ])
 );
 
 //#endregion
