@@ -190,7 +190,7 @@ const reverseBits = (bin: string): string => {
 
 //#endregion
 
-//#region
+//#region rotate matrix
 // Given an N by N matrix, rotate it by 90 degrees clockwise.
 
 // For example, given the following matrix:
@@ -221,17 +221,64 @@ const rotate90 = (mat: NumMat): NumMat => {
     }
     subArr.push(flatArr[j]);
   }
-
   return finalMat;
 };
 
-log(
-  rotate90([
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-  ])
-);
+// log(
+//   rotate90([
+//     [1, 2, 3, 4],
+//     [5, 6, 7, 8],
+//     [9, 10, 11, 12],
+//     [13, 14, 15, 16],
+//   ])
+// );
+
+//#endregion
+
+//#region find indices of concatenated words
+
+// Given a string s and a list of words words, where each word is the same length, find all starting indices of substrings in s that is a concatenation of every word in words exactly once.
+
+// For example, given s = "dogcatcatcodecatdog" and words = ["cat", "dog"], return [0, 13], since "dogcat" starts at index 0 and "catdog" starts at index 13.
+
+// Given s = "barfoobazbitbyte" and words = ["dog", "cat"], return [] since there are no substrings composed of "dog" and "cat" in s.
+
+// The order of the indices does not matter.
+
+const permut = (s: string): Set<string> | string => {
+  const len: number = s.length;
+  if (len < 2) return s;
+
+  const permutations = new Set<string>();
+  for (let i = 0; i < len; ++i) {
+    const char: string = s[i];
+
+    if (s.indexOf(char) != i) continue;
+
+    const remainingString: string = `${s.slice(0, i)}${s.slice(i + 1, len)}`;
+
+    for (const subPermutation of permut(remainingString))
+      permutations.add(char + subPermutation);
+  }
+  return permutations;
+};
+
+const findConcatWordsIndices = (s: string, words: string[]): number[] => {
+  const indices: number[] = [];
+  const conCat: string = words.join("");
+
+  const uniqueStr: Set<string> = permut(conCat) as Set<string>;
+
+  const catLen: number = conCat.length;
+  const startLen: number = s.length - catLen;
+
+  for (let i = startLen; i >= 0; --i)
+    if (uniqueStr.has(s.slice(i, i + catLen))) indices.push(i);
+
+  return indices;
+};
+
+log(findConcatWordsIndices("dogcatcatcodecatdog", ["cat", "dog"]));
 
 //#endregion
 
