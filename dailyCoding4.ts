@@ -291,7 +291,32 @@ const findConcatWordsIndices = (s: string, words: string[]): number[] => {
 const hasOneToOneCharMapping = (s1: string, s2: string): boolean =>
   new Set<string>(s1).size === new Set<string>(s2).size;
 
-log(hasOneToOneCharMapping("abc", "bcd"), hasOneToOneCharMapping("foo", "bar"));
+// log(hasOneToOneCharMapping("abc", "bcd"), hasOneToOneCharMapping("foo", "bar"));
+
+//#endregion
+
+// Given a stack of N elements, interleave the first half of the stack with the second half reversed using only one other queue. This should be done in-place.
+// Recall that you can only push or pop from a stack, and enqueue or dequeue from a queue.
+// For example, if the stack is [1, 2, 3, 4, 5], it should become [1, 5, 2, 4, 3]. If the stack is [1, 2, 3, 4], it should become [1, 4, 2, 3].
+// Hint: Try working backwards from the end state.
+
+//#region
+
+const createInterleaveStack = (n: number[]): number[] => {
+  const interleavedStack: number[] = [];
+  const half: number = floor(n.length / 2);
+
+  for (let i = n.length - 1; i >= half; --i) interleavedStack.push(n.pop());
+
+  for (let j = n.length - 1; j >= 0; --j)
+    interleavedStack.splice(j, 0, n.pop());
+
+  return interleavedStack;
+};
+
+log(createInterleaveStack([1, 2, 3, 4]));
+
+// couldn't quite do it without splice. oh well
 
 //#endregion
 
