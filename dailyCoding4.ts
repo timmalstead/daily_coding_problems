@@ -1,13 +1,15 @@
 //#region helpers
 
 import { count } from "console";
+import { add } from "./helpers";
 
 // @ts-ignore
-const [{ log }, { abs, max, min, floor, random, round, sqrt }, { now }] = [
-  console,
-  Math,
-  Date,
-];
+const [
+  { log },
+  { abs, max, min, floor, random, round, sqrt },
+  { now },
+  { isInteger },
+] = [console, Math, Date, Number];
 
 //#endregion
 
@@ -295,7 +297,7 @@ const hasOneToOneCharMapping = (s1: string, s2: string): boolean =>
 
 //#endregion
 
-//#region
+//#region create interleaved stack
 
 // Given a stack of N elements, interleave the first half of the stack with the second half reversed using only one other queue. This should be done in-place.
 // Recall that you can only push or pop from a stack, and enqueue or dequeue from a queue.
@@ -358,7 +360,108 @@ const createInterleaveStack = (n: number[]): number[] => {
 
 //an even easier way
 
-log(createInterleaveStack([1, 2, 3, 4]));
+// log(createInterleaveStack([1, 2, 3, 4]));
+
+//#endregion
+
+//#region greatest common denominator
+
+//[42,56,14]
+
+const findGCD = (x: number[]): number | null => {
+  for (let i = min(...x); i >= 0; --i)
+    if (x.every((n) => isInteger(n / i))) return i;
+
+  return null;
+};
+
+// log(findGCD([42, 56, 14]));
+//#endregion
+
+//#region partition into two minimum subsets
+
+// Given an array of positive integers, divide the array into two subsets such that the difference between the sum of the subsets is as small as possible.
+
+// For example, given [5, 10, 15, 20, 25], return the sets {10, 25} and {5, 15, 20}, which has a difference of 5, which is the smallest possible difference
+
+const intArr: number[] = [5, 10, 15, 20, 25];
+
+const findMin = (
+  arr: number[],
+  i: number,
+  curSum: number,
+  sumTotal: number
+): number => {
+  if (i === 0) return abs(sumTotal - curSum - curSum);
+  else
+    return min(
+      findMin(arr, i - 1, curSum + arr[i - 1], sumTotal),
+      findMin(arr, i - 1, curSum, sumTotal)
+    );
+};
+
+// log(findMin(intArr, intArr.length, 0, intArr.reduce(add)));
+
+//#endregion
+
+//#region overlapping squares
+
+// You are given given a list of rectangles represented by min and max x- and y-coordinates. Compute whether or not a pair of rectangles overlap each other. If one rectangle completely covers another, it is considered overlapping.
+
+// For example, given the following rectangles:
+
+// {
+//     "top_left": (1, 4),
+//     "dimensions": (3, 3) # width, height
+// },
+// {
+//     "top_left": (-1, 3),
+//     "dimensions": (2, 1)
+// },
+// {
+//     "top_left": (0, 5),
+//     "dimensions": (4, 3)
+// }
+// return true as the first and third rectangle overlap each other.
+
+interface Rectangle {
+  top_left: [number, number];
+  dimensions: [number, number];
+}
+
+const recs: Rectangle[] = [
+  {
+    top_left: [1, 4],
+    dimensions: [3, 3], // width, height
+  },
+  {
+    top_left: [-1, 3],
+    dimensions: [2, 1],
+  },
+  {
+    top_left: [0, 5],
+    dimensions: [4, 3],
+  },
+];
+
+const findOverlap = (r: Rectangle[]): boolean => {
+  const positions: Set<string> = new Set<string>();
+
+  for (let i = 0; i < r.length; ++i) {
+    const { top_left, dimensions }: Rectangle = r[i];
+
+    for (let j = 0; j < dimensions[0]; ++j)
+      for (let k = 0; k < dimensions[1]; ++k) {
+        const pos: string = `${top_left[0] + j}-${top_left[1] + k}`;
+
+        if (positions.has(pos)) return true;
+        else positions.add(pos);
+      }
+  }
+  return false;
+};
+
+log(findOverlap(recs));
 
 //#endregion
 
