@@ -447,9 +447,7 @@ const recs: Rectangle[] = [
 const findOverlap = (r: Rectangle[]): boolean => {
   const positions: Set<string> = new Set<string>();
 
-  for (let i = 0; i < r.length; ++i) {
-    const { top_left, dimensions }: Rectangle = r[i];
-
+  for (const { top_left, dimensions } of r)
     for (let j = 0; j < dimensions[0]; ++j)
       for (let k = 0; k < dimensions[1]; ++k) {
         const pos: string = `${top_left[0] + j}-${top_left[1] + k}`;
@@ -457,11 +455,31 @@ const findOverlap = (r: Rectangle[]): boolean => {
         if (positions.has(pos)) return true;
         else positions.add(pos);
       }
-  }
+
   return false;
 };
 
-log(findOverlap(recs));
+// log(findOverlap(recs));
+
+//#endregion
+
+//#region longest subarray of distinct elements
+
+// Given an array of elements, return the length of the longest subarray where all its elements are distinct.
+// For example, given the array [5, 1, 3, 5, 2, 3, 4, 1], return 5 as the longest subarray of distinct elements is [5, 2, 3, 4, 1]
+
+const longestSubArray = (nums: number[]): number => {
+  let [longestLen, checker]: [number, Set<number>] = [0, new Set<number>()];
+
+  for (const n of nums) {
+    if (checker.has(n)) checker.clear();
+    checker.add(n);
+    if (checker.size > longestLen) longestLen = checker.size;
+  }
+  return longestLen;
+};
+
+log(longestSubArray([5, 2, 3, 4, 1, 5, 1, 3]));
 
 //#endregion
 
