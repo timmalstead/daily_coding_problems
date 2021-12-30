@@ -469,8 +469,9 @@ const findOverlap = (r: Rectangle[]): boolean => {
 // For example, given the array [5, 1, 3, 5, 2, 3, 4, 1], return 5 as the longest subarray of distinct elements is [5, 2, 3, 4, 1]
 
 const longestSubArray = (nums: number[]): number => {
-  let [longestLen, checker]: [number, Set<number>] = [0, new Set<number>()];
+  let longestLen: number = 0;
 
+  const checker = new Set<number>();
   for (const n of nums) {
     if (checker.has(n)) checker.clear();
     checker.add(n);
@@ -479,7 +480,39 @@ const longestSubArray = (nums: number[]): number => {
   return longestLen;
 };
 
-log(longestSubArray([5, 2, 3, 4, 1, 5, 1, 3]));
+// log(longestSubArray([5, 2, 3, 4, 1, 5, 1, 3]));
+
+//#endregion
+
+//#region maximum subarray sum
+
+//Given a circular array, compute its maximum subarray sum in O(n) time. A subarray can be empty, and in this case the sum is 0.
+
+//For example, given [8, -1, 3, 4], return 15 as we choose the numbers 3, 4, and 8 where the 8 is obtained from wrapping around.
+
+//Given [-4, 5, 1, 0], return 6 as we choose the numbers 5 and 1.
+
+const maxSubArray = (nums: number[]): number => {
+  let max: number = 0;
+
+  const len: number = nums.length;
+
+  for (let i = 0; i < len * len; ++i) {
+    const arrToSum: number[] = [];
+    const bin: string = i.toString(2).padStart(len, "0");
+
+    for (let j = 0; j < len; ++j) if (bin[j] === "1") arrToSum.push(nums[j]);
+
+    const arrSum: number = arrToSum.reduce(add, 0);
+
+    if (arrSum > max) max = arrSum;
+  }
+  return max;
+};
+
+log(maxSubArray([-4, 5, 1, 0]));
+
+//don't know the trick to get this done in pure linear time
 
 //#endregion
 
