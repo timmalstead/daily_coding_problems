@@ -493,9 +493,7 @@ const longestSubArray = (nums: number[]): number => {
 //Given [-4, 5, 1, 0], return 6 as we choose the numbers 5 and 1.
 
 const maxSubArray = (nums: number[]): number => {
-  let max: number = 0;
-
-  const len: number = nums.length;
+  let [max, len]: number[] = [0, nums.length];
 
   for (let i = 0; i < len * len; ++i) {
     const arrToSum: number[] = [];
@@ -507,13 +505,36 @@ const maxSubArray = (nums: number[]): number => {
 
     if (arrSum > max) max = arrSum;
   }
+
   return max;
 };
 
-log(maxSubArray([-4, 5, 1, 0]));
+// log(maxSubArray([-4, 5, 1, 0]));
 
 //don't know the trick to get this done in pure linear time
 
+//#endregion
+
+//#region minimum number to make non overlapping intervals
+
+// Given a collection of intervals, find the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.
+// Intervals can "touch", such as [0, 1] and [1, 2], but they won't be considered overlapping.
+
+// For example, given the intervals [7, 9], [2, 4], [5, 8], return 1 as the last interval can be removed and the first two won't overlap.
+// The intervals are not necessarily sorted in any order.
+
+const nonOverlapIntervals = (...intervals: number[][]): number => {
+  let intervalsToRemove: number = 0;
+
+  intervals.sort((a, b) => a[0] - b[0]);
+
+  for (let i = 1; i < intervals.length; ++i)
+    if (intervals[i][0] < intervals[i - 1][1]) ++intervalsToRemove;
+
+  return intervalsToRemove;
+};
+
+log(nonOverlapIntervals([7, 9], [2, 4], [5, 8]));
 //#endregion
 
 //#region
