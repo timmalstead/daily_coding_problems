@@ -548,13 +548,59 @@ const nonOverlapIntervals = (...intervals: number[][]): number => {
 const advanceToEnd = (nums: number[]): boolean => {
   for (let i = 0; i < nums.length; ++i)
     for (let j = i; j < i + nums[i]; ++j)
-      if (i + nums[i] === nums.length - 1) return true;
+      if (i + nums[j] === nums.length - 1) return true;
 
   return false;
 };
 
-log(advanceToEnd([3, 0, 0, 0, 0]));
+// log(advanceToEnd([1, 3, 1, 2, 0, 1]));
 
+//#endregion
+
+//#region count over/under
+
+// Let A be an N by M matrix in which every row and every column is sorted.
+
+// Given i1, j1, i2, and j2, compute the number of elements of M smaller than M[i1, j1] and larger than M[i2, j2].
+
+// For example, given the following matrix:
+
+// [[1, 3, 7, 10, 15, 20],
+//  [2, 6, 9, 14, 22, 25],
+//  [3, 8, 10, 15, 25, 30],
+//  [10, 11, 12, 23, 30, 35],
+//  [20, 25, 30, 35, 40, 45]]
+// And i1 = 1, j1 = 1, i2 = 3, j2 = 3, return 15 as there are 14 numbers in the matrix smaller than 6 or greater than 23.
+
+const a: number[][] = [
+  [1, 3, 7, 10, 15, 20],
+  [2, 6, 9, 14, 22, 25],
+  [3, 8, 10, 15, 25, 30],
+  [10, 11, 12, 23, 30, 35],
+  [20, 25, 30, 35, 40, 45],
+];
+
+const [i, j]: number[][] = [
+  [1, 2],
+  [3, 3],
+];
+
+const countOverUnder = (
+  mat: number[][],
+  sm: number[],
+  lg: number[]
+): number => {
+  let count: number = 0;
+
+  const [under, over]: number[] = [mat[sm[0]][sm[1]], mat[lg[0]][lg[1]]];
+  mat.flat().forEach((n: number): void => {
+    if (n < under || n > over) ++count;
+  });
+
+  return count;
+};
+
+log(countOverUnder(a, i, j));
 //#endregion
 
 //#region
