@@ -600,7 +600,48 @@ const countOverUnder = (
   return count;
 };
 
-log(countOverUnder(a, i, j));
+// log(countOverUnder(a, i, j));
+//#endregion
+
+//#region rotate array by k
+
+// Given an array and a number k that's smaller than the length of the array, rotate the array to the right k elements in-place.
+
+const rotateArrByK = (arr: any[], k: number): any[] => {
+  for (let i = 0; i < k; ++i) arr.unshift(arr.pop());
+
+  return arr;
+};
+
+// log(rotateArrByK([1, 2, 3, 4, 5], 3));
+
+//#endregion
+
+//#region subset does not have a remainder
+
+//Given a set of distinct positive integers, find the largest subset such that every pair of elements in the subset (i, j) satisfies either i % j = 0 or j % i = 0.
+
+//For example, given the set [3, 5, 10, 20, 21], you should return [5, 10, 20]. Given [1, 3, 6, 24], return [1, 3, 6, 24].
+
+const setA = new Set<number>([3, 5, 10, 20, 21]);
+const setB = new Set<number>([1, 3, 6, 24]);
+
+const largestModuloSubset = (nums: Set<number>): Set<number> => {
+  const returnSet = new Set<number>();
+
+  const numArr: number[] = [...nums];
+  for (let iter = 1; iter < numArr.length; ++iter) {
+    const [i, j]: number[] = [numArr[iter - 1], numArr[iter]];
+
+    if (i % j === 0 || j % i === 0) returnSet.add(i).add(j);
+  }
+
+  return returnSet;
+};
+
+log(largestModuloSubset(setA));
+log(largestModuloSubset(setB));
+
 //#endregion
 
 //#region
