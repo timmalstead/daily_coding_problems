@@ -639,8 +639,29 @@ const largestModuloSubset = (nums: Set<number>): Set<number> => {
   return returnSet;
 };
 
-log(largestModuloSubset(setA));
-log(largestModuloSubset(setB));
+// log(largestModuloSubset(setA));
+// log(largestModuloSubset(setB));
+
+//#endregion
+
+//#region
+
+//Given a string of parentheses, find the balanced string that can be produced from it using the minimum number of insertions and deletions. If there are multiple solutions, return any of them.
+
+//For example, given "(()", you could return "(())". Given "))()(", you could return "()()()()".
+
+const isBalancedString = (str: string): boolean => {
+  const stack: string[] = [];
+
+  for (const s of str)
+    if (s === "(") stack.push(s);
+    else if (stack.pop() !== "(") return false;
+
+  return stack.length === 0;
+};
+
+// i do not think i know how to go about this
+log(isBalancedString("()((()))()()()"));
 
 //#endregion
 
