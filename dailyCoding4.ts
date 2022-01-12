@@ -699,14 +699,13 @@ const largestTriangleSum = (mat: number[][]): number => {
 //Do not convert the integer into a string.
 
 const isIntPalindrome = (int: number): boolean | null => {
-  int = abs(int);
-
   if (!isInteger(int)) {
-    error("The number supplied must be an integer");
+    error("The number supplied to isIntPalindrome must be an integer");
     return null;
   } else {
     const stack: number[] = [];
 
+    int = abs(int);
     while (int) {
       stack.unshift(int % 10);
       int = floor(int / 10);
@@ -719,7 +718,25 @@ const isIntPalindrome = (int: number): boolean | null => {
   }
 };
 
-log(isIntPalindrome(2223));
+// log(isIntPalindrome(-22322));
+
+//#endregion
+
+//#region find min sum in pivoted array
+
+//Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand. Find the minimum element in O(log N) time. You may assume the array does not contain duplicates.
+
+//For example, given [5, 7, 10, 3, 4], return 3.
+
+//i'm on vacation and i don't care to do a very complex recursive operation with a binary search, so i'm just going to aim for O(N) time and O(1) space complexity
+
+const findLowestValInPivotArr = (arr: number[]): number => {
+  for (let i = 1; i < arr.length; ++i) if (arr[i] < arr[i - 1]) return arr[i];
+
+  return arr[0];
+};
+
+log(findLowestValInPivotArr([5, 7, 10, 3, 4]));
 
 //#endregion
 
