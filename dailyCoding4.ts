@@ -5,7 +5,7 @@ import { add } from "./helpers";
 
 // @ts-ignore
 const [
-  { log },
+  { log, error },
   { abs, max, min, floor, random, round, sqrt },
   { now },
   { isInteger },
@@ -698,18 +698,25 @@ const largestTriangleSum = (mat: number[][]): number => {
 //Write a program that checks whether an integer is a palindrome. For example, 121 is a palindrome, as well as 888. 678 is not a palindrome.
 //Do not convert the integer into a string.
 
-const isIntPalindrome = (int: number): boolean => {
-  const stack: number[] = [];
+const isIntPalindrome = (int: number): boolean | null => {
+  int = abs(int);
 
-  while (int) {
-    stack.unshift(int % 10);
-    int = floor(int / 10);
+  if (!isInteger(int)) {
+    error("The number supplied must be an integer");
+    return null;
+  } else {
+    const stack: number[] = [];
+
+    while (int) {
+      stack.unshift(int % 10);
+      int = floor(int / 10);
+    }
+
+    for (let i = 0; i < floor(stack.length / 2); ++i)
+      if (stack[i] !== stack[stack.length - 1 - i]) return false;
+
+    return true;
   }
-
-  for (let i = 0; i < floor(stack.length / 2); ++i)
-    if (stack[i] !== stack[stack.length - 1 - i]) return false;
-
-  return true;
 };
 
 log(isIntPalindrome(2223));
