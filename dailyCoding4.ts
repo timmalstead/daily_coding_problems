@@ -1,7 +1,7 @@
 //#region helpers
 
 import { count } from "console";
-import { add } from "./helpers";
+import { add, asc } from "./helpers";
 
 // @ts-ignore
 const [
@@ -699,10 +699,7 @@ const largestTriangleSum = (mat: number[][]): number => {
 //Do not convert the integer into a string.
 
 const isIntPalindrome = (int: number): boolean | null => {
-  if (!isInteger(int)) {
-    error("The number supplied to isIntPalindrome must be an integer");
-    return null;
-  } else {
+  if (isInteger(int)) {
     const stack: number[] = [];
 
     int = abs(int);
@@ -715,10 +712,15 @@ const isIntPalindrome = (int: number): boolean | null => {
       if (stack[i] !== stack[stack.length - 1 - i]) return false;
 
     return true;
+  } else {
+    error(
+      "The argument supplied to isIntPalindrome must be a number and an integer"
+    );
+    return null;
   }
 };
 
-// log(isIntPalindrome(-22322));
+// log(isIntPalindrome(-2232));
 
 //#endregion
 
@@ -736,7 +738,106 @@ const findLowestValInPivotArr = (arr: number[]): number => {
   return arr[0];
 };
 
-log(findLowestValInPivotArr([5, 7, 10, 3, 4]));
+// log(findLowestValInPivotArr([5, 7, 10, 3, 4]));
+
+//#endregion
+
+//#region find next integer in absolute order
+
+//Given an integer, find the next permutation of it in absolute order. For example, given 48975, the next permutation would be 49578.
+
+const nextAbsoluteInteger = (num: number): number => {
+  const numHolder: number[] = [];
+
+  const numStr: string = num.toString();
+
+  const len: number = numStr.length;
+
+  for (let i = 0; i <= len * len; ++i) {
+    let curNumStr: string = "";
+
+    const binStr: string = i.toString(2).padStart(len, "0");
+
+    for (let j = 0; j < len; ++j) if (binStr[j] === "1") curNumStr += numStr[j];
+
+    log(curNumStr);
+  }
+
+  return 0;
+};
+
+// log(nextAbsoluteInteger(48975));
+
+//#endregion
+
+//#region rotate to permutation
+
+//A permutation can be specified by an array P, where P[i] represents the location of the element at i in the permutation. For example, [2, 1, 0] represents the permutation where elements at the index 0 and 2 are swapped.
+
+//Given an array and a permutation, apply the permutation to the array. For example, given the array ["a", "b", "c"] and the permutation [2, 1, 0], return ["c", "b", "a"].
+
+const arrToPerm = (arr: any[], perm: number[]): any[] | null => {
+  const len: number = arr.length;
+  if (len === perm.length) {
+    const returnArr: any[] = new Array(len);
+
+    for (let i = 0; i < len; ++i) returnArr[i] = arr[perm[i]];
+
+    return returnArr;
+  } else {
+    error("The length of each array used as an argument must be equal");
+    return null;
+  }
+};
+
+// log(arrToPerm(["a", "b", "c"], [2, 1, 0]));
+
+//#endregion
+
+//#region longest common subsequence
+
+//Write a program that computes the length of the longest common subsequence of three given strings. For example, given "epidemiologist", "refrigeration", and "supercalifragilisticexpialodocious", it should return 5, since the longest common subsequence is "eieio".
+
+const findPermutations = (str: string): Set<string> | string | null => {
+  if (!str || typeof str !== "string") {
+    error("Please enter a truthy string");
+    return null;
+  } else if (str.length < 2) return str;
+  else {
+    const permutationsSet = new Set<string>();
+
+    const len: number = str.length;
+    for (let i = 0; i < len; ++i) {
+      const char = str[i];
+
+      if (str.indexOf(char) != i) continue;
+
+      const remainingChars = `${str.slice(0, i)}${str.slice(i + 1, len)}`;
+
+      for (const permutation of findPermutations(remainingChars)) {
+        const newPerm: string = `${char}${permutation}`;
+
+        if (!permutationsSet.has(newPerm)) permutationsSet.add(newPerm);
+      }
+    }
+
+    return permutationsSet;
+  }
+};
+
+// log(findPermutations("abc"));
+
+//alright, the above does work but it's also very easy to overflow the stack
+
+// const longestCommonSubsequence = (...strs: string[]): number | any => {
+//   const perms: string[] = strs.map(findPermutations).flat();
+
+//   return perms;
+// };
+
+// log(findPermutations("epidemiologist"));
+
+// so this one will be tough because it doesn't have to be a contiguous subsequence
 
 //#endregion
 
