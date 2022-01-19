@@ -851,18 +851,47 @@ const findPermutations = (str: string): Set<string> | string | null => {
 
 // Bonus: What input n <= 1000000 gives the longest sequence?
 
+interface CollatzCount {
+  iterations: number;
+  num: number;
+}
+
 const isEven = (n: number): boolean => n % 2 === 0;
 
-const collatzSeq = (n: number): void => {
-  while (n > 1) {
-    log(n);
-    if (isEven(n)) n /= 2;
-    else n = n * 3 + 1;
+// const collatzSeq = (n: number): void => {
+//   while (n > 1) {
+//     log(n);
+//     if (isEven(n)) n /= 2;
+//     else n = n * 3 + 1;
+//   }
+//   log(n);
+// };
+
+const collatzCounter = (num: number): CollatzCount => {
+  const counter: CollatzCount = { iterations: 1, num };
+
+  while (num > 1) {
+    if (isEven(num)) num /= 2;
+    else num = num * 3 + 1;
+    ++counter.iterations;
   }
-  log(n);
+
+  return counter;
 };
 
-collatzSeq(1000);
+const seqTester = (num: number): number => {
+  const countings: CollatzCount[] = [];
+
+  for (let i = 1; i <= num; ++i) countings.push(collatzCounter(i));
+
+  countings.sort((a, b) => a.iterations - b.iterations);
+
+  return countings.pop().num;
+};
+
+log(seqTester(1000000));
+
+// i think that the longest sequence is produced by 837799, but i'm not the best at math problems
 
 //#endregion
 
