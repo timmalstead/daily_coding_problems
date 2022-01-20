@@ -889,9 +889,35 @@ const seqTester = (num: number): number => {
   return countings.pop().num;
 };
 
-log(seqTester(1000000));
+// log(seqTester(1000000));
 
 // i think that the longest sequence is produced by 837799, but i'm not the best at math problems
+
+//#endregion
+
+//#region find starting indices of string pattern
+
+// Given a string and a pattern, find the starting indices of all occurrences of the pattern in the string. For example, given the string "abracadabra" and the pattern "abr", you should return [0, 7]
+
+const findStartIndices = (str: string, pat: string): number[] => {
+  const idxs: number[] = [];
+
+  for (let i = 0; i < str.length; ++i) {
+    let cur: string = "";
+
+    for (let j = i; j < str.length; ++j) {
+      cur += str[j];
+
+      if (cur === pat) {
+        idxs.push(i);
+        break;
+      }
+    }
+  }
+  return idxs;
+};
+
+log(findStartIndices("abracadabra", "bra"));
 
 //#endregion
 
