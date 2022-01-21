@@ -1,6 +1,7 @@
 //#region helpers
 
 import { count } from "console";
+import { isNull } from "util";
 import { add, asc } from "./helpers";
 
 // @ts-ignore
@@ -917,7 +918,41 @@ const findStartIndices = (str: string, pat: string): number[] => {
   return idxs;
 };
 
-log(findStartIndices("abracadabra", "bra"));
+// log(findStartIndices("abracadabra", "bra"));
+
+//#endregion
+
+//#region spreadsheet column id
+
+// Spreadsheets often use this alphabetical encoding for its columns: "A", "B", "C", ..., "AA", "AB", ..., "ZZ", "AAA", "AAB", ....
+
+// Given a column number, return its alphabetical column id. For example, given 1, return "A". Given 27, return "AA".
+
+const findColumnId = (n: number): string | null => {
+  if (!isInteger(n) || n <= 0) {
+    error("Argument for findColumnId must be an integer above zero");
+    return null;
+  } else {
+    let columnId: string = "";
+
+    while (n > 0) {
+      const charId: number = n % 26;
+
+      //okay, i had part of it. some of the below i had to look up
+      if (charId) columnId = `${String.fromCharCode(charId + 64)}${columnId}`;
+      else columnId = `Z${columnId}`;
+
+      n = floor(n / 26) - (charId ? 0 : 1);
+    }
+
+    return columnId;
+  }
+};
+
+log(findColumnId(1));
+log(findColumnId(28));
+log(findColumnId(702));
+log(findColumnId(705));
 
 //#endregion
 
