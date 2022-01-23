@@ -1013,10 +1013,41 @@ const allValidIps = (numStr: string): string[] | null => {
   }
 };
 
-log(allValidIps("2542540123"));
+// log(allValidIps("2542540123"));
 
 // log(isValidIp("254.254.00.123"));
 // log(isValidIp("254.254.0.123"));
+
+//#endregion
+
+//#region longest string of ones in binary
+
+// Given an integer n, return the length of the longest consecutive run of '1's in its binary representation.
+
+// For example, given 156, you should return 3.
+
+const longestBinStrOfOnes = (num: number): number | null => {
+  if (typeof num !== "number" || num === NaN) {
+    error(
+      "Argument supplied to longestBinStrOfOnes must be a float or integer"
+    );
+    return null;
+  } else {
+    let [cur, longest]: number[] = [0, 0];
+
+    for (const bit of num.toString(2))
+      if (bit === "1") {
+        ++cur;
+        if (cur > longest) longest = cur;
+      } else cur = 0;
+
+    return longest;
+  }
+};
+
+log(longestBinStrOfOnes(156));
+log(longestBinStrOfOnes(1.1));
+log(longestBinStrOfOnes(1005.15));
 
 //#endregion
 
