@@ -949,10 +949,74 @@ const findColumnId = (n: number): string | null => {
   }
 };
 
-log(findColumnId(1));
-log(findColumnId(28));
-log(findColumnId(702));
-log(findColumnId(705));
+// log(findColumnId(1));
+// log(findColumnId(28));
+// log(findColumnId(702));
+// log(findColumnId(705));
+
+//#endregion
+
+//#region valid ip addresses
+
+// Given a string of digits, generate all possible valid IP address combinations.
+
+// IP addresses must follow the format A.B.C.D, where A, B, C, and D are numbers between 0 and 255. Zero-prefixed numbers, such as 01 and 065, are not allowed, except for 0 itself.
+
+// For example, given "2542540123", you should return ['254.25.40.123', '254.254.0.123'].
+
+// okey doke, i looked up some of the below, but i think it's alright
+const isValidIp = (str: string): boolean => {
+  const ipSequences: string[] = str.split(".");
+
+  for (const ip of ipSequences)
+    if (
+      ip.length > 3 ||
+      +ip < 0 ||
+      +ip > 255 ||
+      (ip.length > 1 && (+ip === 0 || (+ip !== 0 && +ip[0] === 0)))
+    )
+      return false;
+
+  return true;
+};
+
+const allValidIps = (numStr: string): string[] | null => {
+  const len: number = numStr.length;
+
+  if (len < 4 || len > 12) return null;
+  else {
+    const validIps: string[] = [];
+    let newNumStr: string = numStr;
+
+    for (let i = 1; i < len - 2; ++i)
+      for (let j = i + 1; j < len - 1; ++j)
+        for (let k = j + 1; k < len; ++k) {
+          newNumStr = `${newNumStr.slice(0, k)}.${newNumStr.slice(k)}`;
+          // log(`k: ${k} -- 1: ${newNumStr}`);
+          newNumStr = `${newNumStr.slice(0, j)}.${newNumStr.slice(j)}`;
+          // log(`j: ${j} -- 2: ${newNumStr}`);
+          newNumStr = `${newNumStr.slice(0, i)}.${newNumStr.slice(i)}`;
+          // log(`i: ${i} -- 3: ${newNumStr}`);
+
+          if (isValidIp(newNumStr)) {
+            // log(newNumStr);
+            validIps.push(newNumStr);
+          }
+          // else {
+          //   log(`not correct: ${newNumStr}`);
+          // }
+
+          newNumStr = numStr;
+        }
+
+    return validIps;
+  }
+};
+
+log(allValidIps("2542540123"));
+
+// log(isValidIp("254.254.00.123"));
+// log(isValidIp("254.254.0.123"));
 
 //#endregion
 
