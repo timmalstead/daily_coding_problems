@@ -1050,4 +1050,64 @@ const longestBinStrOfOnes = (num: number): number | null => {
 
 //#region
 
+// Given a number in Roman numeral format, convert it to decimal.
+
+// The values of Roman numerals are as follows:
+
+// {
+//     'M': 1000,
+//     'D': 500,
+//     'C': 100,
+//     'L': 50,
+//     'X': 10,
+//     'V': 5,
+//     'I': 1
+// }
+// In addition, note that the Roman numeral system uses subtractive notation for numbers such as IV and XL.
+
+// Below from Wikipedia
+// The numerals for 4 (IV) and 9 (IX) are written using "subtractive notation",[6] where the first symbol (I) is subtracted from the larger one (V, or X), thus avoiding the clumsier (IIII, and VIIII). Subtractive notation is also used for 40 (XL), 90 (XC), 400 (CD) and 900 (CM). These are the only subtractive forms in standard use.
+
+// For the input XIV, for instance, you should return 14.
+
+// I'll solve for a simple case first
+
+const romanNums: { [numeral: string]: number } = {
+  M: 1000,
+  D: 500,
+  C: 100,
+  L: 50,
+  X: 10,
+  V: 5,
+  I: 1,
+};
+
+const simpleRomanNumeralDecoder = (numeral: string): number => {
+  let acc: number = 0;
+
+  for (let i = 0; i < numeral.length; ) {
+    let compoundNumeral: boolean = true;
+    const [cur, nxt]: string[] = [numeral[i], numeral[i + 1]];
+
+    if (cur === "C" && nxt === "M") acc += 900;
+    else if (cur === "C" && nxt === "D") acc += 400;
+    else if (cur === "X" && nxt === "C") acc += 90;
+    else if (cur === "X" && nxt === "L") acc += 40;
+    else if (cur === "I" && nxt === "X") acc += 9;
+    else if (cur === "I" && nxt === "V") acc += 4;
+    else {
+      acc += romanNums[cur];
+      compoundNumeral = false;
+    }
+    i += compoundNumeral ? 2 : 1;
+  }
+  return acc;
+};
+
+log(simpleRomanNumeralDecoder("MMCDXIV"));
+
+//#endregion
+
+//#region
+
 //#endregion
