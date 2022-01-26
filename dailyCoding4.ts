@@ -1,10 +1,7 @@
 //#region helpers
 
-import { count } from "console";
-import { isNull } from "util";
 import { add, asc } from "./helpers";
 
-// @ts-ignore
 const [
   { log, error },
   { abs, max, min, floor, random, round, sqrt },
@@ -1027,27 +1024,27 @@ const allValidIps = (numStr: string): string[] | null => {
 // For example, given 156, you should return 3.
 
 const longestBinStrOfOnes = (num: number): number | null => {
-  if (typeof num !== "number" || num === NaN) {
-    error(
-      "Argument supplied to longestBinStrOfOnes must be a float or integer"
+  if (typeof num !== "number" || Number.isNaN(num) || !Number.isFinite(num)) {
+    console.error(
+      "Argument supplied to longestBinStrOfOnes must be a finite float or integer"
     );
     return null;
   } else {
-    let [cur, longest]: number[] = [0, 0];
+    let [current, longest]: number[] = [0, 0];
 
     for (const bit of num.toString(2))
       if (bit === "1") {
-        ++cur;
-        if (cur > longest) longest = cur;
-      } else cur = 0;
+        ++current;
+        if (current > longest) longest = current;
+      } else current = 0;
 
     return longest;
   }
 };
 
-log(longestBinStrOfOnes(156));
-log(longestBinStrOfOnes(1.1));
-log(longestBinStrOfOnes(1005.15));
+// log(longestBinStrOfOnes(156));
+// log(longestBinStrOfOnes(1.1));
+// log(longestBinStrOfOnes(1005.15));
 
 //#endregion
 
