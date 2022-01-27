@@ -1048,7 +1048,7 @@ const longestBinStrOfOnes = (num: number): number | null => {
 
 //#endregion
 
-//#region
+//#region roman numeral decoder
 
 // Given a number in Roman numeral format, convert it to decimal.
 
@@ -1070,8 +1070,6 @@ const longestBinStrOfOnes = (num: number): number | null => {
 
 // For the input XIV, for instance, you should return 14.
 
-// I'll solve for a simple case first
-
 const romanNums: { [numeral: string]: number } = {
   M: 1000,
   D: 500,
@@ -1087,16 +1085,18 @@ const simpleRomanNumeralDecoder = (numeral: string): number => {
 
   for (let i = 0; i < numeral.length; ) {
     let compoundNumeral: boolean = true;
-    const [cur, nxt]: string[] = [numeral[i], numeral[i + 1]];
 
-    if (cur === "C" && nxt === "M") acc += 900;
-    else if (cur === "C" && nxt === "D") acc += 400;
-    else if (cur === "X" && nxt === "C") acc += 90;
-    else if (cur === "X" && nxt === "L") acc += 40;
-    else if (cur === "I" && nxt === "X") acc += 9;
-    else if (cur === "I" && nxt === "V") acc += 4;
+    const first: string = numeral[i];
+    const firstAndSecond: string = `${first}${numeral[i + 1]}`;
+
+    if (firstAndSecond === "CM") acc += 900;
+    else if (firstAndSecond === "CD") acc += 400;
+    else if (firstAndSecond === "XC") acc += 90;
+    else if (firstAndSecond === "XL") acc += 40;
+    else if (firstAndSecond === "IX") acc += 9;
+    else if (firstAndSecond === "IV") acc += 4;
     else {
-      acc += romanNums[cur];
+      acc += romanNums[first];
       compoundNumeral = false;
     }
     i += compoundNumeral ? 2 : 1;
@@ -1104,7 +1104,37 @@ const simpleRomanNumeralDecoder = (numeral: string): number => {
   return acc;
 };
 
-log(simpleRomanNumeralDecoder("MMCDXIV"));
+// log(simpleRomanNumeralDecoder("MMCDXIV"));
+
+//#endregion
+
+//#region sparse binary numbers
+
+// We say a number is sparse if there are no adjacent ones in its binary representation. For example, 21 (10101) is sparse, but 22 (10110) is not. For a given input N, find the smallest sparse number greater than or equal to N.
+
+// Do this in faster than O(N log N) time.
+// I'm gonna solve the problem first and then see how i feel about optimizing it
+
+const findNextSparseNumber = (num: number): number => {
+  let isSparseNumFound: boolean = false;
+
+  while (!isSparseNumFound) {
+    let numIsSparse: boolean = true;
+
+    const bin: string = num.toString(2);
+    for (let i = 0; i < bin.length - 1; ++i)
+      if (bin[i] === "1" && bin[i + 1] === "1") {
+        numIsSparse = false;
+        break;
+      }
+
+    if (numIsSparse) isSparseNumFound = true;
+    else ++num;
+  }
+  return num;
+};
+
+log(findNextSparseNumber(11));
 
 //#endregion
 
