@@ -1115,10 +1115,27 @@ const simpleRomanNumeralDecoder = (numeral: string): number => {
 // Do this in faster than O(N log N) time.
 // I'm gonna solve the problem first and then see how i feel about optimizing it
 
-const findNextSparseNumber = (num: number): number => {
-  let isSparseNumFound: boolean = false;
+// const findNextSparseNumber = (num: number): number => {
+//   let isSparseNumFound: boolean = false;
 
-  while (!isSparseNumFound) {
+//   while (!isSparseNumFound) {
+//     let numIsSparse: boolean = true;
+
+//     const bin: string = num.toString(2);
+//     for (let i = 0; i < bin.length - 1; ++i)
+//       if (bin[i] === "1" && bin[i + 1] === "1") {
+//         numIsSparse = false;
+//         break;
+//       }
+
+//     if (numIsSparse) isSparseNumFound = true;
+//     else ++num;
+//   }
+//   return num;
+// };
+
+const findNextSparseNumber = (num: number): number => {
+  while (true) {
     let numIsSparse: boolean = true;
 
     const bin: string = num.toString(2);
@@ -1128,13 +1145,33 @@ const findNextSparseNumber = (num: number): number => {
         break;
       }
 
-    if (numIsSparse) isSparseNumFound = true;
+    if (numIsSparse) return num;
     else ++num;
   }
-  return num;
 };
 
-log(findNextSparseNumber(11));
+// log(findNextSparseNumber(11));
+
+//#endregion
+
+//#region sevenish numbers
+
+// Let's define a "sevenish" number to be one which is either a power of 7, or the sum of unique powers of 7. The first few sevenish numbers are 1, 7, 8, 49, and so on. Create an algorithm to find the nth sevenish number.
+
+const findSevenish = (n: number): number | null => {
+  const sevenishNumbers: number[] = [1];
+  let sumOfUniquePowers: number = 1;
+
+  for (let i = 1; i <= n; ++i) {
+    const pow: number = 7 ** i;
+    sumOfUniquePowers += pow;
+
+    sevenishNumbers.push(pow, sumOfUniquePowers);
+  }
+  return sevenishNumbers[n - 1] || null;
+};
+
+log(findSevenish(1));
 
 //#endregion
 
