@@ -1171,7 +1171,24 @@ const findSevenish = (n: number): number | null => {
   return sevenishNumbers[n - 1] || null;
 };
 
-log(findSevenish(1));
+// log(findSevenish(1));
+
+//#endregion
+
+//#region shortest standardized path
+
+// Given an absolute pathname that may have . or .. as part of it, return the shortest standardized path.
+// For example, given "/usr/bin/../bin/./scripts/../", return "/usr/bin/".
+
+const shortestStandardPath = (s: string): string => {
+  for (let i = 0; i < s.length; ++i) if (s[i] === ".") return s.slice(0, i);
+
+  return s;
+};
+
+log(shortestStandardPath("/usr/bin/../bin/./scripts/../"));
+
+// i don't think that what they want could be this simple, but i'm not certain from the way it is worded
 
 //#endregion
 
