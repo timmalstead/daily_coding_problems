@@ -1186,9 +1186,53 @@ const shortestStandardPath = (s: string): string => {
   return s;
 };
 
-log(shortestStandardPath("/usr/bin/../bin/./scripts/../"));
+// log(shortestStandardPath("/usr/bin/../bin/./scripts/../"));
 
 // i don't think that what they want could be this simple, but i'm not certain from the way it is worded
+
+//#endregion
+
+//#region bloomberg wants to know about executions
+
+// There are N prisoners standing in a circle, waiting to be executed. The executions are carried out starting with the kth person, and removing every successive kth person going clockwise until there is no one left.
+
+// Given N and k, write an algorithm to determine where a prisoner should stand in order to be the last survivor.
+
+// For example, if N = 5 and k = 2, the order of executions would be [2, 4, 1, 5, 3], so you should return 3.
+
+// Bonus: Find an O(log N) solution if k = 2.
+
+// [1, 2, 3, 4, 5]
+// [1, 3, 5]
+
+// [1, 2, 3, 4, 5, 6]
+// [1, 3, 5]
+// [1, 5]
+// [5]
+
+const circularFiringSquad = (n: number, k: number): number => {
+  let prisoners: number[] = [];
+  const dead = new Set<number>();
+
+  for (let i = 1; i <= n; ++i) prisoners.push(i);
+
+  let idx: number = k - 1;
+  while (prisoners.length > 1) {
+    if (prisoners[idx]) {
+      dead.add(idx);
+      idx += k;
+    } else {
+      idx -= prisoners.length;
+      dead.forEach((i) => delete prisoners[i]);
+      prisoners = prisoners.filter((i) => i);
+      dead.clear();
+    }
+  }
+
+  return prisoners[0];
+};
+
+log(circularFiringSquad(6, 2));
 
 //#endregion
 
