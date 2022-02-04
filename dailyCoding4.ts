@@ -1211,28 +1211,25 @@ const shortestStandardPath = (s: string): string => {
 // [5]
 
 const circularFiringSquad = (n: number, k: number): number => {
-  let prisoners: number[] = [];
-  const dead = new Set<number>();
+  let [prisoners, dead]: number[][] = [[], []];
 
   for (let i = 1; i <= n; ++i) prisoners.push(i);
 
   let idx: number = k - 1;
   while (prisoners.length > 1) {
     if (prisoners[idx]) {
-      dead.add(idx);
+      dead.push(idx);
       idx += k;
     } else {
       idx -= prisoners.length;
-      dead.forEach((i) => delete prisoners[i]);
-      prisoners = prisoners.filter((i) => i);
-      dead.clear();
+      for (let j = dead.length - 1; j >= 0; --j) prisoners.splice(dead[j], 1);
+      dead = [];
     }
   }
-
   return prisoners[0];
 };
 
-log(circularFiringSquad(6, 2));
+log(circularFiringSquad(5, 2));
 
 //#endregion
 
