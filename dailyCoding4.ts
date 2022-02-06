@@ -1205,34 +1205,48 @@ const shortestStandardPath = (s: string): string => {
 // [1, 2, 3, 4, 5]
 // [1, 3, 5]
 
-// [1, 2, 3, 4, 5, 6]
-// [1, 3, 5]
-// [1, 5]
+// const circularFiringSquad = (n: number, k: number): number => {
+//   let [prisoners, dead]: number[][] = [[], []];
+
+//   for (let i = 1; i <= n; ++i) prisoners.push(i);
+
+//   let idx: number = k - 1;
+//   log(idx);
+//   while (prisoners.length > 1) {
+//     if (prisoners[idx]) {
+//       dead.push(idx);
+//       idx += k;
+//     } else {
+//       idx -= prisoners.length;
+//       for (let j = dead.length - 1; j >= 0; --j) prisoners.splice(dead[j], 1);
+//       dead = [];
+//     }
+//     log(idx);
+//   }
+//   return prisoners[0];
+// };
+
+// [1, 2, 3, 4, 5, 6] -> 1
+// [1, 3, 4, 5, 6] -> 2
+// [1, 3, 5, 6] -> 3
+// [1, 3, 5] -> 1
+// [1, 5] -> 0
 // [5]
 
 const circularFiringSquad = (n: number, k: number): number => {
-  let [prisoners, dead]: number[][] = [[], []];
+  const prisoners: number[] = [];
 
   for (let i = 1; i <= n; ++i) prisoners.push(i);
 
   let idx: number = k - 1;
   while (prisoners.length > 1) {
-    if (prisoners[idx]) {
-      dead.push(idx);
-      idx += k;
-    } else {
-      idx -= prisoners.length;
-      for (let j = dead.length - 1; j >= 0; --j) prisoners.splice(dead[j], 1);
-      dead = [];
-    }
+    prisoners.splice(idx, 1);
+    idx = (idx + k - 1) % prisoners.length;
   }
+
   return prisoners[0];
 };
 
-log(circularFiringSquad(5, 2));
-
-//#endregion
-
-//#region
+// log(`Answer : ${circularFiringSquad(6, 2)}`);
 
 //#endregion
