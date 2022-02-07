@@ -561,16 +561,16 @@ const allPalindromes = (str: string): Set<string> | null => {
 // const factorial = (num: number): number =>
 //   num <= 1 ? 1 : num * factorial(num - 1);
 
-const factorial = (num: number): number => {
-  let result: number = num;
+// const factorial = (num: number): number => {
+//   let result: number = num;
 
-  while (num > 1) {
-    --num;
-    result = result * num;
-  }
+//   while (num > 1) {
+//     --num;
+//     result = result * num;
+//   }
 
-  return result;
-};
+//   return result;
+// };
 
 // log(len ** 4);
 //#endregion

@@ -1,7 +1,9 @@
 // @ts-ignore
 const { log } = console;
 
-//#region
+import { asc } from "./helpers";
+
+//#region boggler
 
 // Boggle is a game played on a 4 x 4 grid of letters. The goal is to find as many words as possible that can be formed by a sequence of adjacent letters in the grid, using each cell at most once. Given a game board and a dictionary of valid words, implement a Boggle solver.
 
@@ -98,5 +100,45 @@ const solveBoggle = (board: BoggleBoard, words: string[]): string[] => {
   return foundWords;
 };
 
-log(solveBoggle(bBoard, validWords));
+// log(solveBoggle(bBoard, validWords));
+//#endregion
+
+//#region largest combination of numbers
+
+// Given a list of numbers, create an algorithm that arranges them in order to form the largest possible integer. For example, given [10, 7, 76, 415], you should return 77641510
+
+const permutations = (inputArr: any[]): any[] => {
+  const result: any[] = [];
+
+  const permute = (arr: any[], m: any[] = []) => {
+    if (!arr.length) result.push(m);
+    else
+      for (let i = 0; i < arr.length; ++i) {
+        const curr = arr.slice();
+        const next = curr.splice(i, 1);
+        permute(curr.slice(), m.concat(next));
+      }
+  };
+  permute(inputArr);
+
+  return result;
+};
+//copied the above, i don't know why this kind of stuff is so tough for me
+
+const largestPossible = (n: number[]): number => {
+  const perms: number[][] = permutations(n);
+
+  const summedPerms: number[] = perms.map((perm) => +perm.join(""));
+
+  summedPerms.sort(asc);
+
+  return summedPerms.pop();
+};
+
+log(largestPossible([10, 7, 76, 415]));
+
+//#endregion
+
+//#region
+
 //#endregion
