@@ -1496,28 +1496,28 @@ const squaresToN = (n: number): number => {
 //   }
 // };
 
-const wordMakesPalindrome = (s: string): boolean => {
-  const perms: string[] = findPerms(s) as string[];
+// const wordMakesPalindrome = (s: string): boolean => {
+//   const perms: string[] = findPerms(s) as string[];
 
-  const [half, end]: number[] = [floor(s.length / 2), s.length - 1];
+//   const [half, end]: number[] = [floor(s.length / 2), s.length - 1];
 
-  for (const perm of perms) {
-    let isPal: boolean = true;
-    for (let i = 0, j = end; i <= half; ++i, --j)
-      if (perm[i] !== perm[j]) {
-        isPal = false;
-        break;
-      }
-    if (isPal) return true;
-  }
+//   for (const perm of perms) {
+//     let isPal: boolean = true;
+//     for (let i = 0, j = end; i <= half; ++i, --j)
+//       if (perm[i] !== perm[j]) {
+//         isPal = false;
+//         break;
+//       }
+//     if (isPal) return true;
+//   }
 
-  log(perms);
-  return false;
-};
+//   log(perms);
+//   return false;
+// };
 
-log(wordMakesPalindrome("carrace"));
-log(wordMakesPalindrome("dergdre"));
-log(wordMakesPalindrome("otta"));
+// log(wordMakesPalindrome("carrace"));
+// log(wordMakesPalindrome("dergdre"));
+// log(wordMakesPalindrome("otta"));
 
 // this is kind of interesting though. i could use this in combination with the binary string method to determine all permutations of all combinations of a string. i think the issue was i was trying to be do combos and order at the same time
 
