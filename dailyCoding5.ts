@@ -1,7 +1,7 @@
 // @ts-ignore
 const { log } = console;
 
-import { asc } from "./helpers";
+import { asc, dsc } from "./helpers";
 
 //#region boggler
 
@@ -135,7 +135,56 @@ const largestPossible = (n: number[]): number => {
   return summedPerms.pop();
 };
 
-log(largestPossible([10, 7, 76, 415]));
+// log(largestPossible([10, 7, 76, 415]));
+
+//#endregion
+
+//#region snakes and ladders
+
+// Snakes and Ladders is a game played on a 10 x 10 board, the goal of which is get from square 1 to square 100. On each turn players will roll a six-sided die and move forward a number of spaces equal to the result. If they land on a square that represents a snake or ladder, they will be transported ahead or behind, respectively, to a new square.
+
+// Find the smallest number of turns it takes to play snakes and ladders.
+
+const sAndL: { [location: number]: number } = {
+  16: 6,
+  48: 26,
+  49: 11,
+  56: 53,
+  62: 19,
+  64: 60,
+  87: 24,
+  93: 73,
+  95: 75,
+  98: 78,
+  1: 38,
+  4: 14,
+  9: 31,
+  21: 42,
+  28: 84,
+  36: 44,
+  51: 67,
+  71: 91,
+  80: 100,
+};
+
+const rollDie = (sides: number): number => Math.ceil(Math.random() * sides);
+
+const snakesAndLadders = (): number => {
+  let [curSpace, turns]: number[] = [1, 0];
+
+  while (curSpace < 100) {
+    curSpace += rollDie(6);
+    if (sAndL[curSpace]) curSpace = sAndL[curSpace];
+    ++turns;
+  }
+
+  return turns;
+};
+
+const plays: number[] = [];
+for (let i = 0; i < 1000; ++i) plays.push(snakesAndLadders());
+
+plays.sort(dsc).forEach((p) => log(p));
 
 //#endregion
 
