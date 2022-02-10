@@ -205,9 +205,33 @@ const canBeRearrangedWithNoRepeats = (str: string): boolean => {
   return floor(str.length / 2) >= sortedFrequencies.pop();
 };
 
-log(canBeRearrangedWithNoRepeats("howdy"));
-log(canBeRearrangedWithNoRepeats("aaabbc"));
-log(canBeRearrangedWithNoRepeats("aaab"));
+// huh, no i think i may be able to do it while using above algo to help
+
+const arrangeStrWithNoRepeats = (str: string): string | null => {
+  if (canBeRearrangedWithNoRepeats(str)) {
+    const strAsArr: string[] = str.split("");
+    let finalStr: string = strAsArr.shift();
+
+    while (strAsArr.length) {
+      let i: number = 0;
+
+      for (; i < strAsArr.length; ++i) {
+        const curChar: string = strAsArr[i];
+
+        if (curChar !== finalStr[finalStr.length - 1]) {
+          finalStr += curChar;
+          break;
+        }
+      }
+      strAsArr.splice(i, 1);
+    }
+    return finalStr;
+  } else return null;
+};
+
+log(arrangeStrWithNoRepeats("howdy"));
+log(arrangeStrWithNoRepeats("aaabbc"));
+log(arrangeStrWithNoRepeats("aaab"));
 
 //#endregion
 
