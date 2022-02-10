@@ -1,5 +1,5 @@
 // @ts-ignore
-const { log } = console;
+const [{ log }, { ceil, random, floor }] = [console, Math];
 
 import { asc, dsc } from "./helpers";
 
@@ -167,13 +167,13 @@ const sAndL: { [location: number]: number } = {
   80: 100,
 };
 
-const rollDie = (sides: number): number => Math.ceil(Math.random() * sides);
+const rollDie = (): number => ceil(random() * 6);
 
 const snakesAndLadders = (): number => {
   let [curSpace, turns]: number[] = [1, 0];
 
   while (curSpace < 100) {
-    curSpace += rollDie(6);
+    curSpace += rollDie();
     if (sAndL[curSpace]) curSpace = sAndL[curSpace];
     ++turns;
   }
@@ -181,10 +181,33 @@ const snakesAndLadders = (): number => {
   return turns;
 };
 
-const plays: number[] = [];
-for (let i = 0; i < 1000; ++i) plays.push(snakesAndLadders());
+// const plays: number[] = [];
+// for (let i = 0; i < 10000; ++i) plays.push(snakesAndLadders());
 
-plays.sort(dsc).forEach((p) => log(p));
+// plays.sort(dsc).forEach((p) => log(p));
+
+//#endregion
+
+//#region no adjacent characters
+
+// Given a string with repeated characters, rearrange the string so that no two adjacent characters are the same. If this is not possible, return None.
+
+// For example, given "aaabbc", you could return "ababac". Given "aaab", return None.
+
+// i say thee nay to this problem. i'm not going to return the string, because i don't have the time right now, but i will return (i think) a reliable indicator of whether it can be done or not
+
+const canBeRearrangedWithNoRepeats = (str: string): boolean => {
+  const counter: { [num: number]: number } = {};
+  for (const s of str) counter[s] = ++counter[s] || 1;
+
+  const sortedFrequencies: number[] = Object.values(counter).sort(asc);
+
+  return floor(str.length / 2) >= sortedFrequencies.pop();
+};
+
+log(canBeRearrangedWithNoRepeats("howdy"));
+log(canBeRearrangedWithNoRepeats("aaabbc"));
+log(canBeRearrangedWithNoRepeats("aaab"));
 
 //#endregion
 
