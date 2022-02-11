@@ -1,5 +1,9 @@
 // @ts-ignore
-const [{ log }, { ceil, random, floor }] = [console, Math];
+const [{ log }, { ceil, random, floor }, { values, entries }] = [
+  console,
+  Math,
+  Object,
+];
 
 import { asc, dsc } from "./helpers";
 
@@ -200,7 +204,7 @@ const canBeRearrangedWithNoRepeats = (str: string): boolean => {
   const counter: { [num: number]: number } = {};
   for (const s of str) counter[s] = ++counter[s] || 1;
 
-  const sortedFrequencies: number[] = Object.values(counter).sort(asc);
+  const sortedFrequencies: number[] = values(counter).sort(asc);
 
   return floor(str.length / 2) >= sortedFrequencies.pop();
 };
@@ -229,9 +233,54 @@ const arrangeStrWithNoRepeats = (str: string): string | null => {
   } else return null;
 };
 
-log(arrangeStrWithNoRepeats("howdy"));
-log(arrangeStrWithNoRepeats("aaabbc"));
-log(arrangeStrWithNoRepeats("aaab"));
+// log(arrangeStrWithNoRepeats("howdy"));
+// log(arrangeStrWithNoRepeats("aaabbc"));
+// "aaabbc" -> can be rearranged? === true -> [a,a,b,b,c] 'a' -> [a,a,b,c] 'ab' -> [a,b,c] 'aba' -> [a,c] 'abab' -> [c] 'ababa' -> [] 'ababac' -> [].length === 0 -> 'ababac'
+// log(arrangeStrWithNoRepeats("aaab"));
+
+//#endregion
+
+//#region prefix map sum
+
+// Implement a PrefixMapSum class with the following methods:
+
+// insert(key: str, value: int): Set a given key's value in the map. If the key already exists, overwrite the value.
+// sum(prefix: str): Return the sum of all values of keys that begin with a given prefix.
+// For example, you should be able to run the following code:
+
+// mapsum.insert("columnar", 3)
+// assert mapsum.sum("col") == 3
+
+// mapsum.insert("column", 2)
+// assert mapsum.sum("col") == 5
+
+class PrefixMapSum {
+  private data: { [key: string]: number } = {};
+
+  public insert(key: string, val: number): this {
+    this.data[key] = val;
+    return this;
+  }
+
+  public sum(prefix: string): number {
+    const filteredData: [string, number][] = entries(this.data).filter(
+      ([key]): boolean => key.startsWith(prefix)
+    );
+
+    const finalSum: number = filteredData.reduce(
+      (total, [_, num]) => total + num,
+      0
+    );
+
+    return finalSum;
+  }
+}
+
+const pre = new PrefixMapSum();
+
+pre.insert("colOne", 5).insert("colTwo", 3);
+
+log(pre.sum("col"));
 
 //#endregion
 
