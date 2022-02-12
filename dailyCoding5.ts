@@ -1,8 +1,9 @@
 // @ts-ignore
-const [{ log }, { ceil, random, floor }, { values, entries }] = [
+const [{ log }, { ceil, random, floor }, { values, entries }, { isInteger }] = [
   console,
   Math,
   Object,
+  Number,
 ];
 
 import { asc, dsc } from "./helpers";
@@ -263,24 +264,34 @@ class PrefixMapSum {
   }
 
   public sum(prefix: string): number {
-    const filteredData: [string, number][] = entries(this.data).filter(
-      ([key]): boolean => key.startsWith(prefix)
-    );
-
-    const finalSum: number = filteredData.reduce(
-      (total, [_, num]) => total + num,
-      0
-    );
-
-    return finalSum;
+    return entries(this.data)
+      .filter(([key]): boolean => key.startsWith(prefix))
+      .reduce((total, [_, num]): number => total + num, 0);
   }
 }
 
-const pre = new PrefixMapSum();
+// const pre = new PrefixMapSum();
 
-pre.insert("colOne", 5).insert("colTwo", 3);
+// pre.insert("colOne", 5).insert("colTwo", 3);
 
-log(pre.sum("col"));
+// log(pre.sum("col"));
+
+//#endregion
+
+//#region return nth fib number
+
+// Implement the function fib(n), which returns the nth number in the Fibonacci sequence, using only O(1) space.
+
+const fibNth = (n: number): number => {
+  if (!isInteger(n) || n < 1) return NaN;
+  else {
+    const fibIter = (a: number, b: number, n: number): number =>
+      !n ? b : fibIter(a + b, a, --n);
+    return fibIter(0, 1, n);
+  }
+};
+
+log(fibNth(1));
 
 //#endregion
 
