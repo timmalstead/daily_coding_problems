@@ -291,7 +291,63 @@ const fibNth = (n: number): number => {
   }
 };
 
-log(fibNth(1));
+// log(fibNth(1));
+
+//#endregion
+
+//#region min and max with minimum comparisons
+
+// Given an array of numbers of length N, find both the minimum and maximum using less than 2 * (N - 2) comparisons.
+
+const testNums: number[] = [19, 51, 22, 29, 236, 54, 8, 6, 7, 1]; // 10 elements, so aim for fewer than 16 comparions and a return of [1, 236]
+let comparisons: number = 0;
+
+const minMax = (n: number[]): number[] | null => {
+  if (n.length < 2) return null;
+  else {
+    let min: number, max: number;
+
+    if (n[1] > n[0]) {
+      min = n[0];
+      max = n[1];
+    } else {
+      min = n[1];
+      max = n[0];
+    }
+    ++comparisons;
+
+    for (let i = 2; i < n.length; ++i) {
+      const cur: number = n[i];
+      if (cur < min) {
+        min = cur;
+        ++comparisons;
+        log("min");
+      } else if (cur > max) {
+        max = cur;
+        comparisons += 2;
+        log("max");
+      } else {
+        comparisons += 2;
+        log("no change");
+      }
+    }
+    return [min, max];
+  }
+};
+
+const randomize = (a: any[]): any[] => {
+  const finalArr: any[] = [];
+
+  while (a.length) {
+    const cur: number = floor(random() * a.length);
+
+    finalArr.push(a[cur]);
+    a.splice(cur, 1);
+  }
+  return finalArr;
+};
+
+log(minMax(randomize(testNums)), `Comparisons: ${comparisons}`);
 
 //#endregion
 
