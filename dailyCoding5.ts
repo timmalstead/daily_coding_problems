@@ -291,7 +291,9 @@ const fibNth = (n: number): number => {
   }
 };
 
-// log(fibNth(1));
+// fibNth(5) -> fibIter(0,1,5) -> fibIter(1,0,4) -> fibIter(1,1,3) -> fibIter(2,1,2) -> fibIter(3,2,1) -> 3
+
+// log(fibNth(5));
 
 //#endregion
 
@@ -347,7 +349,74 @@ const randomize = (a: any[]): any[] => {
   return finalArr;
 };
 
-log(minMax(randomize(testNums)), `Comparisons: ${comparisons}`);
+// log(minMax(randomize(testNums)), `Comparisons: ${comparisons}`);
+
+//#endregion
+
+//#region is point inside polygon
+
+// You are given a list of N points (x1, y1), (x2, y2), ..., (xN, yN) representing a polygon. You can assume these points are given in order; that is, you can construct the polygon by connecting point 1 to point 2, point 2 to point 3, and so on, finally looping around to connect point N to point 1.
+
+// Determine if a new point p lies inside this polygon. (If p is on the boundary of the polygon, you should return False).
+
+// this is not something i know how to do at all. indeed, i've used turf js for this very reason, so let's look at the ol' hivemind to see if they know something
+
+// type Point = [number, number];
+
+type Point = [number, number];
+
+const pointDoesIntersect = (
+  xI: number,
+  yI: number,
+  xJ: number,
+  yJ: number,
+  lat: number,
+  long: number
+): boolean =>
+  yI > long !== yJ > long && lat < ((xJ - xI) * (long - yI)) / (yJ - yI) + xI;
+
+const isPointInPolygon = (
+  lat: number,
+  long: number,
+  polygon: Point[]
+): boolean => {
+  if (
+    typeof lat !== "number" ||
+    typeof long !== "number" ||
+    lat === NaN ||
+    long === NaN
+  )
+    throw new TypeError("Invalid latitude or longitude. Numbers are expected");
+  else if (!polygon || !Array.isArray(polygon))
+    throw new TypeError("Invalid polygon. Array with locations expected");
+  else if (!polygon.length)
+    throw new TypeError("Invalid polygon. Non-empty Array expected");
+  else {
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++)
+      if (
+        pointDoesIntersect(
+          polygon[i][0],
+          polygon[i][1],
+          polygon[j][0],
+          polygon[j][1],
+          lat,
+          long
+        )
+      )
+        return true;
+
+    return false;
+  }
+};
+
+log(
+  isPointInPolygon(5, 5, [
+    [1, 1],
+    [10, 1],
+    [10, 10],
+    [1, 10],
+  ])
+);
 
 //#endregion
 
