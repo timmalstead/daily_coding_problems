@@ -283,17 +283,16 @@ class PrefixMapSum {
 // Implement the function fib(n), which returns the nth number in the Fibonacci sequence, using only O(1) space.
 
 const fibNth = (n: number): number => {
-  if (!isInteger(n) || n < 1) return NaN;
-  else {
+  if (isInteger(n) && n > 0) {
     const fibIter = (a: number, b: number, n: number): number =>
-      !n ? b : fibIter(a + b, a, --n);
+      n === 0 ? b : fibIter(a + b, a, --n);
     return fibIter(0, 1, n);
-  }
+  } else throw new Error("fibNth argument must be an integer above 0");
 };
 
 // fibNth(5) -> fibIter(0,1,5) -> fibIter(1,0,4) -> fibIter(1,1,3) -> fibIter(2,1,2) -> fibIter(3,2,1) -> 3
 
-// log(fibNth(5));
+// log(fibNth(10));
 
 //#endregion
 
@@ -409,14 +408,79 @@ const isPointInPolygon = (
   }
 };
 
-log(
-  isPointInPolygon(5, 5, [
-    [1, 1],
-    [10, 1],
-    [10, 10],
-    [1, 10],
-  ])
-);
+// log(
+//   isPointInPolygon(5, 5, [
+//     [1, 1],
+//     [10, 1],
+//     [10, 10],
+//     [1, 10],
+//   ])
+// );
+
+//#endregion
+
+//#region academic h index
+
+// In academia, the h-index is a metric used to calculate the impact of a researcher's papers. It is calculated as follows:
+
+// A researcher has index h if at least h of her N papers have h citations each. If there are multiple h satisfying this formula, the maximum is chosen.
+
+// For example, suppose N = 5, and the respective citations of each paper are [4, 3, 0, 1, 5]. Then the h-index would be 3, since the researcher has 3 papers with at least 3 citations.
+
+// Given a list of paper citations of a researcher, calculate their h-index.
+
+//#region incorrect approach
+
+// const hIndex = (papers: number[]): number | any => {
+//   const counter: { [num: number]: number } = {};
+
+//   for (let i = 0; i < papers.length; ++i) {
+//     const cite: number = papers[i];
+
+//     for (let j = 0; j < papers.length; ++j) {
+//       const cur: number = papers[j];
+
+//       log(cur, cite);
+//       if (cite <= cur) counter[cite] = ++counter[cite] || 1;
+//     }
+//   }
+
+//   log(counter);
+// };
+
+// const hIndex = (papers: number[]): number | any => {
+//   const counter: { [num: number]: number } = {};
+
+//   for (let i = 0; i < papers.length; ++i) {
+//     const cite: number = papers[i];
+//     counter[cite] = 1;
+
+//     for (let j = 0; j < papers.length; ++j) {
+//       const cur: number = papers[j];
+
+//       log(cur, cite);
+//       if (cite < cur) ++counter[cite];
+//     }
+//   }
+
+//   log(counter);
+// };
+
+//#endregion
+// how many elements are greater than or equal to the value of that element in the list
+// does length minus index equal current element
+
+const hIndex = (papers: number[]): number | null => {
+  papers.sort(asc);
+
+  const { length } = papers;
+  for (let i = length - 1; i >= 0; --i)
+    if (length - i >= papers[i]) return papers[i];
+
+  return null;
+};
+
+log(hIndex([4, 3, 0, 1, 5]));
 
 //#endregion
 
