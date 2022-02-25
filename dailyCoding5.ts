@@ -111,7 +111,6 @@ const solveBoggle = (board: BoggleBoard, words: string[]): string[] => {
 //#region largest combination of numbers
 
 // Given a list of numbers, create an algorithm that arranges them in order to form the largest possible integer. For example, given [10, 7, 76, 415], you should return 77641510
-
 const permutations = (inputArr: any[]): any[] => {
   const result: any[] = [];
 
@@ -470,18 +469,121 @@ const isPointInPolygon = (
 // how many elements are greater than or equal to the value of that element in the list
 // does length minus index equal current element
 
-const hIndex = (papers: number[]): number | null => {
-  papers.sort(asc);
+const hIndex = (p: number[]): number | null => {
+  p.sort(asc);
 
-  const { length } = papers;
-  for (let i = length - 1; i >= 0; --i)
-    if (length - i >= papers[i]) return papers[i];
+  for (let i = p.length - 1; i >= 0; --i) if (p.length - i >= p[i]) return p[i];
 
   return null;
 };
 
-log(hIndex([4, 3, 0, 1, 5]));
+// log(hIndex([4, 3, 0, 1, 5]));
 
+//#endregion
+
+//#region simple addition, but for some reason it's listed as hard
+
+// You are given an array of length 24, where each element represents the number of new subscribers during the corresponding hour. Implement a data structure that efficiently supports the following:
+
+// update(hour: int, value: int): Increment the element at index hour by value.
+// query(start: int, end: int): Retrieve the number of subscribers that have signed up between start and end (inclusive).
+// You can assume that all values get cleared at the end of the day, and that you will not be asked for start and end values that wrap around midnight.
+
+// class TwentyFour {
+//   private data: number[] = [];
+
+//   private isValidHour(hour: number): boolean {
+//     return hour >= 1 && hour <= 24;
+//   }
+
+//   public update(hour: number, value: number): this {
+//     if (isInteger(value) && isInteger(hour) && this.isValidHour(hour))
+//       this.data[hour - 1] += value;
+
+//     return this;
+//   }
+
+//   public query(start: number, end: number): number {
+//     let total: number = 0;
+
+//     if (
+//       isInteger(start) &&
+//       isInteger(end) &&
+//       this.isValidHour(start) &&
+//       this.isValidHour(end)
+//     )
+//       for (let i = start - 1; i < end; ++i) total += this.data[i];
+
+//     return total;
+//   }
+
+//   constructor() {
+//     for (let i = 0; i < 24; ++i) this.data.push(0);
+//   }
+// }
+
+class TwentyFour {
+  private data: number[] = new Array(24).fill(0);
+
+  private isValidHour(hour: number): boolean {
+    return isInteger(hour) && hour >= 1 && hour <= 24;
+  }
+
+  public update(hour: number, value: number): this {
+    if (isInteger(value) && this.isValidHour(hour))
+      this.data[hour - 1] += value;
+
+    return this;
+  }
+
+  public query(start: number, end: number): number {
+    let total: number = 0;
+
+    if (this.isValidHour(start) && this.isValidHour(end))
+      for (let i = start - 1; i < end; ++i) total += this.data[i];
+
+    return total;
+  }
+}
+
+// const bluh = new TwentyFour();
+
+// bluh.update(5, 58).update(3, 12).update(5.5, 15).update(4, 5);
+
+// log(bluh);
+// log(bluh.query(3, 5));
+
+//#endregion
+
+//#region word circle
+
+// Given a list of words, determine whether the words can be chained to form a circle. A word X can be placed in front of another word Y in a circle if the last character of X is same as the first character of Y.
+
+// For example, the words ['chair', 'height', 'racket', touch', 'tunic'] can form the following circle: chair --> racket --> touch --> height --> tunic --> chair.
+
+const canFormCircle = (w: string[]): boolean => {
+  for (let i = 0; i < w.length - 1; ++i) {
+    const [cur, nxt]: number[] = [i, i + 1]
+
+    if (w[cur][w[cur].length - 1] !== w[nxt][0] || (nxt === w.length - 1 && w[nxt][w[nxt].length - 1] !== w[0][0])) return false
+  }
+  return true
+}
+
+const canWordsMakeCircle = (w: string[]): boolean => {
+  const perms: string[][] = permutations(w)
+
+  for (const perm of perms) if (canFormCircle(perm)) return true
+
+  return false
+}
+
+
+log(canWordsMakeCircle(['chair', 'racket', 'touch', 'height', 'tunic']))
+log(canWordsMakeCircle(['chair', 'height', 'racket', 'touch', 'tunic']))
+
+
+//rarrargh! permutations, my old enemy
 //#endregion
 
 //#region
