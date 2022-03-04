@@ -579,11 +579,39 @@ const canWordsMakeCircle = (w: string[]): boolean => {
 }
 
 
-log(canWordsMakeCircle(['chair', 'racket', 'touch', 'height', 'tunic']))
-log(canWordsMakeCircle(['chair', 'height', 'racket', 'touch', 'tunic']))
-
+// log(canWordsMakeCircle(['chair', 'racket', 'touch', 'height', 'tunic']))
+// log(canWordsMakeCircle(['chair', 'height', 'racket', 'touch', 'tunic']))
 
 //rarrargh! permutations, my old enemy
+//#endregion
+
+//#region word zig zag
+
+// Given a string and a number of lines k, print the string in zigzag form. In zigzag, characters are printed out diagonally from top left to bottom right until reaching the kth line, then back up to top right, and so on.
+
+// For example, given the sentence "thisisazigzag" and k = 4, you should print:
+
+// t     a     g
+//  h   s z   a
+//   i i   i z
+//    s     g
+
+const zigZag = (s: string, k: number): string => {
+  const mat: string[][] = new Array(k).fill(null).map(_ => new Array(s.length).fill(' '))
+
+  for (let i = 0, j = 0, inc = true; i < s.length; ++i) {
+    mat[j][i] = s[i]
+
+    inc ? ++j : --j
+
+    if (j === k - 1 || j === 0) inc = !inc
+  }
+
+  return mat.map(s => s.join('')).join('\n')
+}
+
+log(zigZag('thisisazigzag', 4))
+
 //#endregion
 
 //#region
