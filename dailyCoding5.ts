@@ -597,7 +597,7 @@ const canWordsMakeCircle = (w: string[]): boolean => {
 //    s     g
 
 const zigZag = (s: string, k: number): string => {
-  const mat: string[][] = new Array(k).fill(null).map(_ => new Array(s.length).fill(' '))
+  const mat: string[][] = new Array(k).fill(null).map(() => new Array(s.length).fill(' '))
 
   for (let i = 0, j = 0, inc = true; i < s.length; ++i) {
     mat[j][i] = s[i]
@@ -610,9 +610,36 @@ const zigZag = (s: string, k: number): string => {
   return mat.map(s => s.join('')).join('\n')
 }
 
-log(zigZag('thisisazigzag', 4))
+// log(zigZag('thisisazigzag', 6))
 
 //#endregion
+
+//#region
+
+// Create a basic sentence checker that takes in a stream of characters and determines whether they form valid sentences. If a sentence is valid, the program should print it out.
+
+// We can consider a sentence valid if it conforms to the following rules:
+
+// The sentence must start with a capital letter, followed by a lowercase letter or a space.
+// All other characters must be lowercase letters, separators (,,;,:) or terminal marks (.,?,!,‽).
+// There must be a single space between each word.
+// The sentence must end with a terminal mark immediately following a word.
+
+const isCap = (char: string): boolean => /[A-Z]/.test(char)
+const isLow = (char: string): boolean => /[a-z]/.test(char)
+const isTerminal = (char: string): boolean => /[\. | ? | ! | ‽]/.test(char)
+const isSeperator = (char: string): boolean => /[, | ; | :]/.test(char)
+const isValidChar = (char: string): boolean => isLow(char) || isSeperator(char) || isTerminal(char)
+const isSpacingValid = (word: string): boolean => word && word[0] !== " " && word[word.length - 1] !== " "
+
+const printIfValidSentence = (word: string): void => isCap(word[0]) && word.slice(1).split('').every(isValidChar) && word.split(" ").every(isSpacingValid) && word[word.length - 2] !== " " && isTerminal(word[word.length - 1]) && log(word)
+
+
+printIfValidSentence('Howdy there!')
+
+//#endregion
+
+
 
 //#region
 
