@@ -635,11 +635,25 @@ const isSpacingValid = (word: string): boolean => word && word[0] !== " " && wor
 const printIfValidSentence = (word: string): void => isCap(word[0]) && word.slice(1).split('').every(isValidChar) && word.split(" ").every(isSpacingValid) && word[word.length - 2] !== " " && isTerminal(word[word.length - 1]) && log(word)
 
 
-printIfValidSentence('Howdy there!')
+// printIfValidSentence('Howdy there!')
+
+//#endregion fixed point, fixed value
+
+// A fixed point in an array is an element whose value is equal to its index. Given a sorted array of distinct elements, return a fixed point, if one exists. Otherwise, return False.
+
+// For example, given [-6, 0, 2, 40], you should return 2. Given [1, 5, 7, 8], you should return False.
+
+const fixedPoint = (a: number[]): number | boolean => {
+  for (let i = 0; i < a.length; ++i) if (a[i] === i) return i
+  return false
+}
+
+log(fixedPoint([-6, 0, 2, 40]))
+log(fixedPoint([1, 5, 7, 8]))
+
+//#region
 
 //#endregion
-
-
 
 //#region
 
