@@ -648,11 +648,24 @@ const fixedPoint = (a: number[]): number | boolean => {
   return false
 }
 
-log(fixedPoint([-6, 0, 2, 40]))
-log(fixedPoint([1, 5, 7, 8]))
+// log(fixedPoint([-6, 0, 2, 40]))
+// log(fixedPoint([1, 5, 7, 8]))
 
-//#region
+const bleh: Record<string, number> = { shmeh: 6 }
 
+//#region Pythagorean triplet
+
+const pyTriplet = (n: number[]): boolean => {
+  for (let i = 0; i < n.length - 2; ++i)
+    if ((n[i] ** 2 + n[i + 1] ** 2) === n[i + 2] ** 2) return true
+
+  return false
+}
+
+log(pyTriplet([1, 2, 3, 4,]))
+log(pyTriplet([3, 4, 5, 6, 7]))
+log(pyTriplet([7, 8, 9]))
+log(pyTriplet([1, 2, 3, 5, 12, 13]))
 //#endregion
 
 //#region
