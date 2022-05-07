@@ -662,10 +662,52 @@ const pyTriplet = (n: number[]): boolean => {
   return false
 }
 
-log(pyTriplet([1, 2, 3, 4,]))
-log(pyTriplet([3, 4, 5, 6, 7]))
-log(pyTriplet([7, 8, 9]))
-log(pyTriplet([1, 2, 3, 5, 12, 13]))
+// log(pyTriplet([1, 2, 3, 4,]))
+// log(pyTriplet([3, 4, 5, 6, 7]))
+// log(pyTriplet([7, 8, 9]))
+// log(pyTriplet([1, 2, 3, 5, 12, 13]))
+// log(pyTriplet([1]))
+//#endregion
+
+//#region is toeplitz
+
+// In linear algebra, a Toeplitz matrix is one in which the elements on any given diagonal from top left to bottom right are identical.
+
+// Here is an example:
+
+// 1 2 3 4 8
+// 5 1 2 3 4
+// 4 5 1 2 3
+// 7 4 5 1 2
+// Write a program to determine whether a given input is a Toeplitz matrix.
+
+// so the way this was written makes me think i only have to deal with whatever diagonal starts at the top left of the matrix. i.e. matrix[0][0]
+// probably just written poorly, but it's saturday and that's what i think i'm gonna solve for
+
+// assuming that each row in the matrix is the same length
+const isToeplitz = (mat: number[][]): boolean => {
+  const step: number = mat[0].length + 1
+  const flatMat: number[] = mat.flat()
+  const firstVal: number = flatMat[0]
+
+  for (let i = step; i < flatMat.length; i += step) {
+    const currentVal: number = flatMat[i]
+
+    if (currentVal !== firstVal) return false
+  }
+
+  return true
+}
+
+log(isToeplitz(
+  [
+    [1, 2, 3, 4, 8],
+    [5, 1, 2, 3, 4],
+    [4, 5, 1, 2, 3],
+    [7, 4, 5, 1, 2]
+  ]
+))
+
 //#endregion
 
 //#region
