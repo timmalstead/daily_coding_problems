@@ -596,21 +596,27 @@ const canWordsMakeCircle = (w: string[]): boolean => {
 //   i i   i z
 //    s     g
 
-const zigZag = (s: string, k: number): string => {
-  const mat: string[][] = new Array(k).fill(null).map(() => new Array(s.length).fill(' '))
+const zigZag = (str: string, depth: number): string => {
+  if (depth >= 2) {
+    depth = Math.trunc(depth)
+    const matrix: string[][] = new Array(depth).fill(null).map(() => new Array(str.length).fill(' '))
+    const lowAndHighBounds: Set<number> = new Set([0, depth - 1])
 
-  for (let i = 0, j = 0, inc = true; i < s.length; ++i) {
-    mat[j][i] = s[i]
+    for (let row = 0, col = 0, isRowIncrementing = true; col < str.length; ++col) {
+      matrix[row][col] = str[col]
 
-    inc ? ++j : --j
+      isRowIncrementing ? ++row : --row
 
-    if (j === k - 1 || j === 0) inc = !inc
+      lowAndHighBounds.has(row) && (isRowIncrementing = !isRowIncrementing)
+    }
+
+    str = matrix.map(s => s.join('')).join('\n')
   }
 
-  return mat.map(s => s.join('')).join('\n')
+  return str
 }
 
-// log(zigZag('thisisazigzag', 6))
+// log(zigZag('thisisazigzag', 4))
 
 //#endregion
 
@@ -699,17 +705,51 @@ const isToeplitz = (mat: number[][]): boolean => {
   return true
 }
 
-log(isToeplitz(
-  [
-    [1, 2, 3, 4, 8],
-    [5, 1, 2, 3, 4],
-    [4, 5, 1, 2, 3],
-    [7, 4, 5, 1, 2]
-  ]
-))
+// log(isToeplitz(
+//   [
+//     [1, 2, 3, 4, 8],
+//     [5, 1, 2, 3, 4],
+//     [4, 5, 1, 2, 3],
+//     [7, 4, 5, 1, 2]
+//   ]
+// ))
+
+//#endregion
+
+//#region same number of positive bits
+// Given an integer n, find the next biggest integer with the same number of 1-bits on. For example, given the number 6 (0110 in binary), return 9 (1001).
+
+const binaryString = (num: number): string => num.toString(2)
+
+const findNumberOfPositiveBits = (num: number): number => {
+  let positiveBits: number = 0
+
+  for (const bit of binaryString(num))
+    if (bit === "1") ++positiveBits
+
+  return positiveBits
+}
+
+const findNextNumberWithEqualNumberOfPostiveBits = (num: number): number => {
+  const originalNumberOfPositiveBits: number = findNumberOfPositiveBits(num)
+  let [currentNumber, currentNumberOfPositiveBits]: number[] = [num, NaN]
+
+  if (originalNumberOfPositiveBits) {
+    while (originalNumberOfPositiveBits !== currentNumberOfPositiveBits) {
+      ++currentNumber
+      currentNumberOfPositiveBits = findNumberOfPositiveBits(currentNumber)
+    }
+  }
+  return currentNumber
+}
+
+
+
+log(findNextNumberWithEqualNumberOfPostiveBits(0))
 
 //#endregion
 
 //#region
 
 //#endregion
+
